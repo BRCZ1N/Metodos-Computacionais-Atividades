@@ -1,12 +1,14 @@
 ```octave
-a = 5; % Atribui o valor 5 à variável 'a'
+% Atribuição de Variáveis e Operações Básicas
+a = 5;
 b = 10;
-c = a + b; % Soma
-d = b - a; % Subtração
-e = a * b; % Multiplicação
-f = b / a; % Divisão
-g = b^2; % Exponenciação
+c = a + b;
+d = b - a;
+e = a * b;
+f = b / a;
+g = b^2;
 
+% Vetores e Matrizes
 v = [1, 2, 3, 4]; % Vetor linha
 v_col = [1; 2; 3; 4]; % Vetor coluna
 A = [1, 2, 3; 4, 5, 6; 7, 8, 9]; % Matriz 3x3
@@ -15,6 +17,7 @@ A_transpose = A'; % Transposta de uma matriz
 A_inv = inv(A); % Inversa de uma matriz
 det_A = det(A); % Determinante de uma matriz
 
+% Controle de Fluxo: Condicionais e Laços
 if a > b
   disp('a é maior que b');
 elseif a == b
@@ -33,16 +36,19 @@ while n <= 5
   n = n + 1;
 endwhile
 
+% Funções
 function y = quadrado(x)
   y = x^2;
 endfunction
 
 resultado = quadrado(4); % Chama a função 'quadrado' com argumento 4
 
+% Resolução de Sistemas Lineares
 A = [3, 2; 1, 4];
 b = [7; 10];
 x = A \ b; % Resolve o sistema Ax = b
 
+% Interpolação
 x = [1, 2, 3, 4];
 y = [2, 4, 6, 8];
 xi = 2.5;
@@ -50,11 +56,14 @@ yi_linear = interp1(x, y, xi); % Interpolação linear
 p = polyfit(x, y, 1); % Ajuste polinomial de grau 1 (linear)
 yi_poly = polyval(p, xi); % Avaliação do polinômio no ponto xi
 
+% Diferenciação e Integração Numérica
 f = @(x) x^3 + 2*x + 1;
 x_values = 0:0.1:10;
 df = diff(f(x_values)) ./ diff(x_values); % Diferenciação numérica
 
 Q = quad(@(x) x^3 + 2*x + 1, 0, 10); % Integração numérica de 0 a 10
+
+% Métodos Iterativos
 
 % Método de Newton-Raphson
 f = @(x) x^2 - 2;
@@ -82,6 +91,8 @@ while (b - a) / 2 > tol
   endif
 endwhile
 
+% Resolução de Equações Diferenciais
+
 % Método de Euler
 f = @(t, y) -2*y + t;
 h = 0.1; % Passo
@@ -107,6 +118,8 @@ for i = 1:length(t)-1
   y(i+1) = y(i) + (k1 + 2*k2 + 2*k3 + k4) / 6;
 endfor
 plot(t, y);
+
+% Análise de Dados
 
 % Ajuste de Curvas
 x = [1, 2, 3, 4, 5];
