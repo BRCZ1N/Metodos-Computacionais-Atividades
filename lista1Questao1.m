@@ -17,8 +17,8 @@ function lista1Questao1()
 
     for m = 1:i
 
-        x = m_test(m,1);
-        y = m_test(m,2);
+        x = m_test(m,j-1);
+        y = m_test(m,j);
 
         r = calculaR(x, y);
         t = calculaT(x, y);
