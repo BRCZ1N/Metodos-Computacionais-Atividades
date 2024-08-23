@@ -12,6 +12,9 @@ function lista1Questao1()
 
     [i, j] = size(m_test);
 
+    disp('   x       y       r       θ (graus)');
+    disp('---------------------------------------');
+
     for m = 1:i
 
         x = m_test(m,1);
@@ -20,8 +23,7 @@ function lista1Questao1()
         r = calculaR(x, y);
         t = calculaT(x, y);
 
-        disp(r);
-        disp(t);
+        printf(' %5.2f   %5.2f   %5.2f   %8.2f\n', x, y, r, t);
 
     endfor
 
