@@ -8,6 +8,8 @@ function lista1Questao2()
   while (i ~= length(v))
 
     [result,erro] = calcula(v(i),eps);
+    fprintf('Resultado para %d: %.10f\n', v(i), result);
+    fprintf('Erro: %.10f\n', erro);
     i = i+1;
 
   endwhile
