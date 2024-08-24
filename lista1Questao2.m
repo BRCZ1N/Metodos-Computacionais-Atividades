@@ -73,13 +73,13 @@ endfunction
 
 function x = calcularAproximacao(x,a)
 
-  x = (x + a/x)/2
+  x = (x + a/x)/2;
 
 endfunction
 
 function erro = calcularErroAproximacao(xProximo,x)
 
-  erro = abs((xProximo-x)/xProximo)
+  erro = abs((xProximo-x)/xProximo);
 
 endfunction
 
