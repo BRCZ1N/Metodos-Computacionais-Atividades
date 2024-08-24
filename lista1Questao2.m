@@ -5,11 +5,16 @@ function lista1Questao2()
   eps = 1e-4;
   i = 1;
 
-  while (i ~= length(v))
+  while (i <= length(v))
 
     [result,erro] = calcula(v(i),eps);
-    fprintf('Resultado para %d: %.10f\n', v(i), result);
-    fprintf('Erro: %.10f\n', erro);
+
+    if imag(result) ~= 0
+      fprintf('Resultado aproximado para a raiz de %d: %.10fi\n', v(i), imag(result));
+    else
+      fprintf('Resultado aproximado para a raiz de %d: %.10f\n', v(i), real(result));
+    endif
+
     i = i+1;
 
   endwhile
