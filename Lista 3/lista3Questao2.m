@@ -32,7 +32,6 @@ function lista3Questao2()
       fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
               it, a, b, r, f(r), Ea);
 
-      Ea = calcularErroEstimativa(it, r, rPrevio);
 
       if (it >= n || Ea <= E)
         fprintf("Raiz encontrada: %f\n", r);
@@ -51,6 +50,7 @@ function lista3Questao2()
 
       rPrevio = r;
       r = b - (fb * (a - b)) / (fa - fb);
+      Ea = calcularErroEstimativa(it, r, rPrevio);
     endwhile
 
     if it > n
