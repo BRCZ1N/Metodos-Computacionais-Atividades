@@ -31,8 +31,6 @@ function lista3Questao2()
     while (it <= n)
       fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
               it, a, b, r, f(r), Ea);
-
-
       if (it >= n || Ea <= E)
         fprintf("Raiz encontrada: %f\n", r);
         break;

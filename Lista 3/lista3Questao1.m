@@ -8,7 +8,7 @@ function lista3Questao1()
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 2; % Tolerância em porcentagem
-  Ea = 100; % Erro absoluto inicial (grande valor para iniciar o loop)
+  Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
   r = inf; % Valor inicial de r (raiz) como infinito
 
   % Cria um vetor x de 400 pontos entre 0.5 e 1
@@ -41,13 +41,17 @@ function lista3Questao1()
       r = (a + b) / 2; % Calcula o ponto médio do intervalo
 
       % Exibe os valores da iteração atual
+      if it > 1
+        Ea = calcularErroEstimativa(r, rPrevio); % Calcula o erro absoluto a partir da segunda iteração
+      else
+        Ea = Inf; % Na primeira iteração, o erro é infinito
+      end
+
       fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
               it, a, b, r, f(r), Ea);
 
-      Ea = calcularErroEstimativa(it, r, rPrevio); % Calcula o erro absoluto
-
       % Verifica se o erro é menor ou igual à tolerância ou se atingiu o máximo de iterações
-      if (it >= n || Ea <= Es)
+      if (Ea <= Es)
         fprintf("Raiz encontrada: %f\n", r); % Exibe a raiz encontrada
         break; % Sai do loop
       end
@@ -70,9 +74,9 @@ function lista3Questao1()
 endfunction
 
 % Função para calcular o erro absoluto
-function Ea = calcularErroEstimativa(it, resultadoAtual, resultadoPrev)
-  if it == 1
-    Ea = Inf; % Se for a primeira iteração, o erro é infinito
+function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
+  if resultadoPrev == Inf
+    Ea = Inf; % Se o valor anterior for infinito, o erro é infinito
   else
     Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Calcula o erro percentual
   end
