@@ -1,44 +1,37 @@
-function lista4Questao1MetodoSecante()
+function lista4Questao1NewtonRaphson()
 
-  f = @(x) x.^2 - 3*x + e^(x) - 2;
+  f = @(x) x.^2 - 3*x + exp(x) - 2;
+  df = @(x) 2*x - 3 + exp(x);
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
-  Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
-
-  it = 0; % Inicializa o contador de iterações
-  N = 20; % Define o número máximo de iterações
+  Ea = inf; % Erro absoluto inicial (grande valor para iniciar o loop)
   n = 0;
+  N = 20; % Define o número máximo de iterações
   x = 0;
-  xPrevio = -1;
-  xProx = 0;
 
   for n = 0:(N-1)
 
-    xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
+    xProx = x - f(x)/df(x);
+    Ea = calcularErroEstimativa(xProx,x);
 
     fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
-              it, x, f(x), Ea);
-
-    Ea = calcularErroEstimativa(xProx,x) ;
+              n, x, f(x), Ea);
 
     if(Ea < Es)
 
       fprintf("Iterações %d: Raiz encontrada: %f\n", ...
-              it+1, x);
-      break;
+              n+1, x);
+      return;
 
     end
 
-    xPrevio = x;
     x = xProx;
 
   endfor
 
-    % Se o número máximo de iterações for atingido sem encontrar a raiz
-    if it > n
-      fprintf("Método falhou em %d iterações\n", it); % Exibe mensagem de falha
-    end
+  fprintf("Método falhou em %d iterações\n", n); % Exibe mensagem de falha
+
 
 endfunction
 
@@ -52,5 +45,5 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
 endfunction
 
 % Chama a função principal
-lista4Questao1MetodoSecante();
+lista4Questao1NewtonRaphson();
 

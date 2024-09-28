@@ -1,6 +1,12 @@
-function lista4Questao1MetodoSecante()
+function lista5Questao3MetodoSecante()
 
-  f = @(x) x.^2 - 3*x + e^(x) - 2;
+  e = 8.9e-12;
+  F = 1.25;
+  q = 2e-5;
+  Q = 2e-5;
+  raio = 0.85;
+
+  f = @(x)((1/(4*pi*e)) * (q*Q*x / (x.^2 + raio.^2).^(3/2)) - F);
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
@@ -8,21 +14,18 @@ function lista4Questao1MetodoSecante()
 
   it = 0; % Inicializa o contador de iterações
   N = 20; % Define o número máximo de iterações
-  n = 0;
   x = 0;
-  xPrevio = -1;
+  xPrevio = 0;
   xProx = 0;
 
   for n = 0:(N-1)
 
-    xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
+    xProx = xPrevio*f(x) - x*f(xPrevio)/ f(x) - f(xPrevio);
 
     fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
               it, x, f(x), Ea);
 
-    Ea = calcularErroEstimativa(xProx,x) ;
-
-    if(Ea < Es)
+    if(calcularErroEstimativa(xProx,x) < Es)
 
       fprintf("Iterações %d: Raiz encontrada: %f\n", ...
               it+1, x);
@@ -52,5 +55,5 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
 endfunction
 
 % Chama a função principal
-lista4Questao1MetodoSecante();
+lista5Questao3MetodoSecante();
 
