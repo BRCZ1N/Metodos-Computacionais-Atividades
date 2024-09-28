@@ -14,18 +14,21 @@ function lista5Questao3MetodoSecante()
 
   it = 0; % Inicializa o contador de iterações
   N = 20; % Define o número máximo de iterações
+  n = 0;
   x = 0;
-  xPrevio = 0;
+  xPrevio = -1;
   xProx = 0;
 
   for n = 0:(N-1)
 
-    xProx = xPrevio*f(x) - x*f(xPrevio)/ f(x) - f(xPrevio);
+    xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
 
     fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
               it, x, f(x), Ea);
 
-    if(calcularErroEstimativa(xProx,x) < Es)
+    Ea = calcularErroEstimativa(xProx,x);
+
+    if(Ea < Es)
 
       fprintf("Iterações %d: Raiz encontrada: %f\n", ...
               it+1, x);
@@ -55,5 +58,5 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
 endfunction
 
 % Chama a função principal
-lista5Questao3MetodoSecante();
+lista4Questao1MetodoSecante();
 

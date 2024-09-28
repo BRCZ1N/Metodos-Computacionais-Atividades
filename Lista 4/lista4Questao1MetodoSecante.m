@@ -20,7 +20,7 @@ function lista4Questao1MetodoSecante()
     fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
               it, x, f(x), Ea);
 
-    Ea = calcularErroEstimativa(xProx,x) ;
+    Ea = calcularErroEstimativa(xProx,x);
 
     if(Ea < Es)
 

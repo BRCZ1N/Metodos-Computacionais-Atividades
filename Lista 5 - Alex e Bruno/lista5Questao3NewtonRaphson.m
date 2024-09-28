@@ -1,7 +1,16 @@
 function lista4Questao1NewtonRaphson()
 
-  f = @(x) x.^2 - 3*x + exp(x) - 2;
-  df = @(x) 2*x - 3 + exp(x);
+  e = 8.9e-12;
+  F = 1.25;
+  q = 2e-5;
+  Q = 2e-5;
+  raio = 0.85;
+
+  f = @(x)((1/(4*pi*e)) * (q*Q*x / (x.^2 + raio.^2).^(3/2)) - F);
+  df = @(x)(1 / (4 * pi * e)) * ...
+     ((q * Q * (x^2 + raio^2)^(3/2)) - ...
+      (3 * q * Q * x^2 * (x^2 + raio^2)^(1/2))) / ...
+     (x^2 + raio^2)^3;
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
