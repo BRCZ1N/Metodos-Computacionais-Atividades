@@ -1,12 +1,33 @@
 function lista5Questao3MetodoSecante()
 
-  e = 8.9e-12;
-  F = 1.25;
-  q = 2e-5;
-  Q = 2e-5;
-  raio = 0.85;
+  % Definindo constantes
+e = 8.9e-12;
+F = 1.25;
+q = 2e-5;
+Q = 2e-5;
+raio = 0.85;
 
-  f = @(x)((1/(4*pi*e)) * (q*Q*x / (x.^2 + raio.^2).^(3/2)) - F);
+% Definindo a função
+f = @(x) (1/(4*pi*e)) * (q*Q*x ./ (x.^2 + raio^2).^(3/2)) - F;
+
+% Gerando valores de x para o gráfico
+x_values = linspace(-5, 5, 400);
+y_values = f(x_values);
+
+% Criando o gráfico
+figure;
+plot(x_values, y_values, 'b', 'LineWidth', 1.5);
+hold on;
+
+title('Gráfico da Função f(x)');
+xlabel('x');
+ylabel('f(x)');
+ylim([-5e-5, 5e-5]); % Ajustando o limite do eixo y para melhor visualização
+xlim([-5, 5]); % Ajustando o limite do eixo x
+grid on;
+legend('f(x)');
+hold off;
+
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
@@ -14,9 +35,9 @@ function lista5Questao3MetodoSecante()
 
   it = 0; % Inicializa o contador de iterações
   N = 20; % Define o número máximo de iterações
-  n = 0;
-  x = 0;
-  xPrevio = -1;
+  n = 0
+  x = 0.5;
+  xPrevio = 0;
   xProx = 0;
 
   for n = 0:(N-1)
@@ -24,7 +45,7 @@ function lista5Questao3MetodoSecante()
     xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
 
     fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
-              it, x, f(x), Ea);
+              n, x, f(x), Ea);
 
     Ea = calcularErroEstimativa(xProx,x);
 

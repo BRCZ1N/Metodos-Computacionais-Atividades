@@ -9,7 +9,7 @@ function lista5Questao3Bisseccao()
   f = @(x)((1/(4*pi*e)) * (q*Q*x / (x.^2 + raio.^2).^(3/2)) - F);
 
   a = 0;
-  b = 1;
+  b = 0.5;
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 5e-4; % Tolerância em porcentagem

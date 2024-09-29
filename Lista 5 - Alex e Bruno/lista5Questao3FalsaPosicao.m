@@ -9,7 +9,7 @@ function lista5Questao3FalsaPosicao()
   f = @(x)((1/(4*pi*e)) * (q*Q*x / (x.^2 + raio.^2).^(3/2)) - F);
 
   a = 0;
-  b = 1;
+  b = 0.5;
   E = 5e-4;
   Ea = inf;
   rPrevio = inf;
