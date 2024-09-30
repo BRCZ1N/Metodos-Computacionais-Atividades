@@ -1,4 +1,4 @@
-function lista4Questao1NewtonRaphson()
+function lista5Questao3NewtonRaphson()
 
   e = 8.9e-12;
   F = 1.25;
@@ -13,7 +13,7 @@ function lista4Questao1NewtonRaphson()
      (x^2 + raio^2)^3;
 
   % Define a tolerância para o erro absoluto e o erro inicial
-  Es = 10^(-4); % Tolerância em porcentagem
+  Es = 5^(-4); % Tolerância em porcentagem
   Ea = inf; % Erro absoluto inicial (grande valor para iniciar o loop)
   n = 0;
   N = 20; % Define o número máximo de iterações
@@ -54,5 +54,5 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
 endfunction
 
 % Chama a função principal
-lista4Questao1NewtonRaphson();
+lista5Questao3NewtonRaphson();
 

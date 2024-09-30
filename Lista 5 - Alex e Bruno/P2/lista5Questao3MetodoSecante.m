@@ -30,12 +30,12 @@ hold off;
 
 
   % Define a tolerância para o erro absoluto e o erro inicial
-  Es = 10^(-4); % Tolerância em porcentagem
+  Es = 5^(-4); % Tolerância em porcentagem
   Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
 
   it = 0; % Inicializa o contador de iterações
   N = 20; % Define o número máximo de iterações
-  n = 0
+  n = 0;
   x = 0.5;
   xPrevio = 0;
   xProx = 0;

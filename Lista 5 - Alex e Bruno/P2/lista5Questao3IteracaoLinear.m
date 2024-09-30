@@ -10,7 +10,7 @@ function lista5Questao3IteracaoLinear()
 
   g = @(x)(4*pi*e*F*(x.^2 + raio.^2).^(3/2) / (q * Q));
 
-  Es = 10^(-4);
+  Es = 5^(-4);
   Ea = Inf;
   it = 0;
   n = 20;
