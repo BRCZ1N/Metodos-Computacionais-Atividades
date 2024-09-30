@@ -1,13 +1,16 @@
-function lista5Questao1FalsaPosicao()
+function lista5Questao4FalsaPosicao()
 
-  P = 35000;
-  A = 8500;
-  n = 7;
+  r = 1;
+  Vs = 0.837758;
+  %Vesfera = 4/3*pi*r^(3) = 4,18879
+  %Pw*Vs*G = Ps*Vesfera*G
+  %1000*Vs = 200*4,18879
+  %Vs = 0.837758
 
-  f = @(i) (P*((i*(1+i).^n)/((1+i).^n - 1)) - A);
+  f = @(h) ((pi*h.^(2))/3)*(3*r-h)-Vs;
 
-  a = 0.01;
-  b = 0.3;
+  a = 0;
+  b = 1;
   E = 5e-5;
   Ea = inf;
   rPrevio = inf;
@@ -58,5 +61,5 @@ function Ea = calcularErroEstimativa(it, resultadoAtual, resultadoPrev)
   end
 endfunction
 
-lista5Questao1FalsaPosicao();
+lista5Questao4FalsaPosicao();
 

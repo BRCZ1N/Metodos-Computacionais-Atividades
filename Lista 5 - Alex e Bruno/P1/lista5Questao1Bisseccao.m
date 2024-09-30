@@ -1,7 +1,7 @@
 function lista5Questao1Bisseccao()
 
-  P = 35.000;
-  A = 8.500;
+  P = 35000;
+  A = 8500;
   n = 7;
 
   f = @(i) (P*((i*(1+i).^n)/((1+i).^n - 1)) - A);
