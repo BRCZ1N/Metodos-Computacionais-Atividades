@@ -1,4 +1,4 @@
-  function lista5Questao2NewRaphson()
+  function lista5Questao2NewtonRaphson()
   % Parâmetros fornecidos
   P_umax = 80000;  % P_u,max
   ku = 0.05;       % k_u
