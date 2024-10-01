@@ -24,7 +24,7 @@ function lista5Questao3NewtonRaphson()
     xProx = x - f(x)/df(x);
     Ea = calcularErroEstimativa(xProx,x);
 
-    fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
+    fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
               n, x, f(x), Ea);
 
     if(Ea < Es)
@@ -51,6 +51,12 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
   else
     Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Calcula o erro percentual
   end
+endfunction
+
+function Et = calcularErroVerdadeiro(valorVerdadeiro, resultadoAtual)
+
+    Et = (abs((valorVerdadeiro - resultadoAtual) / valorVerdadeiro)) * 100;
+
 endfunction
 
 % Chama a função principal

@@ -14,19 +14,6 @@ function lista5Questao3FalsaPosicao()
   Ea = inf;
   rPrevio = inf;
 
-  x = linspace(0.5, 1, 400);
-  y = f(x);
-  figure;
-  plot(x, y, 'b', 'LineWidth', 2);
-  hold on;
-  plot(x, zeros(size(x)), 'k--');
-  xlabel('x');
-  ylabel('f(x)');
-  title('Gráfico de f(x) = x.^3 - 9*x + 3');
-  grid on;
-  legend('f(x) = x.^3 - 9*x + 3');
-  hold off;
-
   if (f(a) * f(b) > 0)
     disp("Erro: não há mudança de sinal!");
   else
@@ -37,7 +24,7 @@ function lista5Questao3FalsaPosicao()
     fb = f(b);
 
     while (it <= n)
-      fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
+      fprintf('Iteração %d: a = %f, b = %f, xr = %f, f(xr) = %f, Ea = %f\n', ...
               it, a, b, r, f(r), Ea);
       if (it >= n || Ea <= E)
         fprintf("Raiz encontrada: %f\n", r);
@@ -71,6 +58,12 @@ function Ea = calcularErroEstimativa(it, resultadoAtual, resultadoPrev)
   else
     Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100;
   end
+endfunction
+
+function Et = calcularErroVerdadeiro(valorVerdadeiro, resultadoAtual)
+
+    Et = (abs((valorVerdadeiro - resultadoAtual) / valorVerdadeiro)) * 100;
+
 endfunction
 
 lista5Questao3FalsaPosicao();

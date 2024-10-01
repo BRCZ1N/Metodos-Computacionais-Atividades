@@ -10,25 +10,6 @@ function lista5Questao3Secante()
   % Definindo a função
   f = @(x) (1/(4*pi*e)) * (q*Q*x ./ (x.^2 + raio^2).^(3/2)) - F;
 
-  % Gerando valores de x para o gráfico
-  x_values = linspace(-5, 5, 400);
-  y_values = f(x_values);
-
-  % Criando o gráfico
-  figure;
-  plot(x_values, y_values, 'b', 'LineWidth', 1.5);
-  hold on;
-
-  title('Gráfico da Função f(x)');
-  xlabel('x');
-  ylabel('f(x)');
-  ylim([-5e-5, 5e-5]); % Ajustando o limite do eixo y para melhor visualização
-  xlim([-5, 5]); % Ajustando o limite do eixo x
-  grid on;
-  legend('f(x)');
-  hold off;
-
-
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 5^(-4); % Tolerância em porcentagem
   Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
@@ -44,7 +25,7 @@ function lista5Questao3Secante()
 
     xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
 
-    fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
+    fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
               n, x, f(x), Ea);
 
     Ea = calcularErroEstimativa(xProx,x);
@@ -76,6 +57,12 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
   else
     Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Calcula o erro percentual
   end
+endfunction
+
+function Et = calcularErroVerdadeiro(valorVerdadeiro, resultadoAtual)
+
+    Et = (abs((valorVerdadeiro - resultadoAtual) / valorVerdadeiro)) * 100;
+
 endfunction
 
 % Chama a função principal

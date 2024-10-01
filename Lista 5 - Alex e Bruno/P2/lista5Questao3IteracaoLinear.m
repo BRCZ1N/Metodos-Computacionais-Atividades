@@ -47,6 +47,12 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
   end
 endfunction
 
+function Et = calcularErroVerdadeiro(valorVerdadeiro, resultadoAtual)
+
+    Et = (abs((valorVerdadeiro - resultadoAtual) / valorVerdadeiro)) * 100;
+
+endfunction
+
 % Chama a função principal
 lista5Questao3IteracaoLinear();
 
