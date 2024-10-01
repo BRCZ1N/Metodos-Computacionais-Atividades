@@ -8,20 +8,20 @@ function lista5Questao5()
 
     % Executar o método da Bissecção
     fprintf("Método da Bissecção:\n");
-    [rootBisseccao, itBisseccao, valoresBisseccao] = metodoBissecao(u, mi, q, g, v);
+    [rootBisseccao, itBisseccao, valoresBisseccao] = metodoBisseccao(u, mi, q, g, v);
 
-    % Executar o método da Secante
-    fprintf("\nMétodo da Secante:\n");
-    [rootSecante, itSecante, valoresSecante] = metodoSecante(u, mi, q, g, v);
+    % Executar o método de Newton-Raphson
+    fprintf("\nMétodo de Newton-Raphson:\n");
+    [rootNewtonRaphson, itNewtonRaphson, valoresNewtonRaphson] = metodoNewtonRaphson(u, mi, q, g, v);
 
     % Criar tabela comparativa
-    criar_tabela(itBisseccao, rootBisseccao, itSecante, rootSecante);
+    criar_tabela(itBisseccao, rootBisseccao, itNewtonRaphson, rootNewtonRaphson);
 
     % Criar gráficos de convergência
-    criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante);
+    criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresNewtonRaphson);
 endfunction
 
-function [r, it, valores] = metodoBissecao(u, mi, q, g, v)
+function [r, it, valores] = metodoBisseccao(u, mi, q, g, v)
     f = @(t) u * log(mi / (mi - q * t)) - g * t - v;
 
     a = 10;
@@ -42,10 +42,10 @@ function [r, it, valores] = metodoBissecao(u, mi, q, g, v)
         it = 1; % Inicializa o contador de iterações
         n = 20; % Define o número máximo de iterações
 
-        % Loop do método da bissecção
+        % Loop do método da Bissecção
         while (it <= n)
             rPrevio = r; % Armazena o valor anterior de r
-            r = (a + b) / 2; % Calcula o ponto médio do intervalo
+            r = (a + b) / 2; % Calcula o ponto médio
             valores = [valores; r]; % Armazena o valor atual
 
             % Exibe os valores da iteração atual
@@ -58,7 +58,7 @@ function [r, it, valores] = metodoBissecao(u, mi, q, g, v)
             fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
                     it, a, b, r, f(r), Ea);
 
-            % Verifica se o erro é menor ou igual à tolerância ou se atingiu o máximo de iterações
+            % Verifica se o erro é menor ou igual à tolerância
             if (Ea <= Es)
                 fprintf("Raiz encontrada: %f\n", r);
                 return; % Sai do loop
@@ -82,37 +82,31 @@ function [r, it, valores] = metodoBissecao(u, mi, q, g, v)
     end
 endfunction
 
-function [r, it, valores] = metodoSecante(u, mi, q, g, v)
+function [r, it, valores] = metodoNewtonRaphson(u, mi, q, g, v)
     f = @(t) u * log(mi / (mi - q * t)) - g * t - v;
+    df = @(t) (u * q / (mi - q * t)) - g; % Derivada da função
 
-    % Define a tolerância para o erro absoluto
-    Es = 1; % Tolerância em porcentagem
+    x = 50; % Valor inicial para t
+    it = 0; % Inicializa o contador de iterações
+    N = 20; % Define o número máximo de iterações
     Ea = Inf; % Erro absoluto inicial
     valores = []; % Armazena os valores de r
 
-    it = 0; % Inicializa o contador de iterações
-    N = 20; % Define o número máximo de iterações
-    x = 50;
-    xPrevio = 10;
-    xProx = 0;
-
     while (it < N)
-        xProx = (xPrevio * f(x) - x * f(xPrevio)) / (f(x) - f(xPrevio));
+        xProx = x - f(x) / df(x); % Cálculo do próximo valor
         valores = [valores; xProx]; % Armazena o novo valor de r
 
-        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
-                it, x, f(x), Ea);
+        fprintf('Iteração %d: xr = %f, f(x) = %f\n', it + 1, x, f(x));
 
         Ea = calcularErroEstimativa(xProx, x);
 
-        if (Ea < Es)
-            fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, x);
-            r = x; % A raiz encontrada
-            return;
+        if (Ea < 1) % Define a tolerância de 1%
+            fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
+            r = xProx; % A raiz encontrada
+            return; % Sai do loop
         end
 
-        xPrevio = x;
-        x = xProx;
+        x = xProx; % Atualiza x para a próxima iteração
         it = it + 1; % Incrementa o contador de iterações
     endwhile
 
@@ -130,14 +124,14 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
     end
 endfunction
 
-function criar_tabela(itBissecao, rootBisseccao, itSecante, rootSecante)
+function criar_tabela(itBisseccao, rootBisseccao, itNewtonRaphson, rootNewtonRaphson)
     fprintf("\nTabela Comparativa:\n");
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
-    fprintf("%-20s %-20d %-20f\n", "Bissecção", itBissecao, rootBisseccao);
-    fprintf("%-20s %-20d %-20f\n", "Secante", itSecante, rootSecante);
+    fprintf("%-20s %-20d %-20f\n", "Bissecção", itBisseccao, rootBisseccao);
+    fprintf("%-20s %-20d %-20f\n", "Newton-Raphson", itNewtonRaphson, rootNewtonRaphson);
 endfunction
 
-function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante)
+function criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresNewtonRaphson)
     figure;
 
     % Gráfico para Bissecção
@@ -148,16 +142,16 @@ function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante
     ylabel('Valor da Raiz');
     grid on;
 
-    % Gráfico para Secante
+    % Gráfico para Newton-Raphson
     subplot(2, 1, 2);
-    plot(1:length(valoresSecante), valoresSecante, 'r-', 'LineWidth', 2);
-    title('Convergência do Método da Secante');
+    plot(1:length(valoresNewtonRaphson), valoresNewtonRaphson, 'r-', 'LineWidth', 2);
+    title('Convergência do Método de Newton-Raphson');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
     grid on;
 
     % Salvar gráficos
-    saveas(gcf, 'convergencia_metodos_bisseccao_secante.png');
+    saveas(gcf, 'convergencia_metodos_bisseccao_newton_raphson.png');
 endfunction
 
 % Chama a função principal
