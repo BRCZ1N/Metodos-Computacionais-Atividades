@@ -1,4 +1,4 @@
-function lista5Questao6Secante()
+function lista5Questao6MetodoSecante()
 
   Q = 20;
   g = 9.81;
@@ -55,5 +55,5 @@ function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
 endfunction
 
 % Chama a função principal
-lista5Questao6Secante();
+lista5Questao6MetodoSecante();
 
