@@ -5,71 +5,87 @@ function lista5Questao6()
 
     % Executar o método da Falsa Posição
     fprintf("Método da Falsa Posição:\n");
-    [rootFalsaPosicao, itFalsaPosicao] = metodoFalsaPosicao(Q, g);
+    [rootFalsaPosicao, itFalsaPosicao, valoresFalsaPosicao] = metodoFalsaPosicao(Q, g);
 
     % Executar o método da Secante
     fprintf("\nMétodo da Secante:\n");
-    [rootSecante, itSecante] = metodoSecante(Q, g);
+    [rootSecante, itSecante, valoresSecante] = metodoSecante(Q, g);
 
     % Criar tabela comparativa
     criar_tabela(itFalsaPosicao, rootFalsaPosicao, itSecante, rootSecante);
+
+    % Criar gráficos de convergência
+    criar_graficos(itFalsaPosicao, valoresFalsaPosicao, itSecante, valoresSecante);
 endfunction
 
-function [r, it] = metodoFalsaPosicao(Q, g)
+function [r, it, valores] = metodoFalsaPosicao(Q, g)
     f = @(y) 1 - ((Q^2 * (3 + y)) / (g * (3 * y + (y^2 / 2))^3));
 
     a = 1;
     b = 2;
-    E = 1; % Tolerância
-    Ea = inf; % Erro absoluto inicial
-    rPrevio = inf; % Valor anterior da raiz
 
+    % Define a tolerância para o erro absoluto
+    Es = 1; % Tolerância em porcentagem
+    Ea = Inf; % Erro absoluto inicial
+    r = inf; % Valor inicial de r como infinito
+    valores = []; % Armazena os valores de r
+
+    % Verifica se há mudança de sinal no intervalo [a, b]
     if (f(a) * f(b) > 0)
         disp("Erro: não há mudança de sinal!");
         r = NaN; % Indica falha
         return;
     else
         it = 1; % Inicializa o contador de iterações
-        r = b - (f(b) * (a - b)) / (f(a) - f(b)); % Cálculo inicial da raiz
-        fa = f(a);
-        fb = f(b);
+        n = 20; % Define o número máximo de iterações
 
-        while (it <= 20)
-            fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
+        % Loop do método da Falsa Posição
+        while (it <= n)
+            rPrevio = r; % Armazena o valor anterior de r
+            r = b - (f(b) * (a - b)) / (f(a) - f(b)); % Calcula nova raiz
+            valores = [valores; r]; % Armazena o valor atual
+
+            % Exibe os valores da iteração atual
+            if it > 1
+                Ea = calcularErroEstimativa(r, rPrevio); % Calcula o erro absoluto
+            else
+                Ea = Inf; % Na primeira iteração, o erro é infinito
+            end
+
+            fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
                     it, a, b, r, f(r), Ea);
 
-            if (it >= 20 || Ea <= E)
+            % Verifica se o erro é menor ou igual à tolerância ou se atingiu o máximo de iterações
+            if (Ea <= Es)
                 fprintf("Raiz encontrada: %f\n", r);
                 return; % Sai do loop
             end
 
-            if (f(a) * f(r) < 0)
-                b = r; % Atualiza b
-                fb = f(r);
-            else
-                a = r; % Atualiza a
-                fa = f(r);
-            end
+            it = it + 1; % Incrementa o contador de iterações
 
-            rPrevio = r; % Armazena o valor anterior de r
-            r = b - (fb * (a - b)) / (fa - fb); % Calcula nova raiz
-            Ea = calcularErroEstimativa(r, rPrevio); % Atualiza erro
-            it = it + 1; % Incrementa contador de iterações
+            % Atualiza o intervalo [a, b] com base no valor de f(r)
+            if (f(a) * f(r) < 0)
+                b = r; % Se houver mudança de sinal, atualiza o limite superior
+            else
+                a = r; % Caso contrário, atualiza o limite inferior
+            end
         endwhile
 
-        if it > 20
+        % Se o número máximo de iterações for atingido sem encontrar a raiz
+        if it > n
             fprintf("Método falhou em %d iterações\n", it);
             r = NaN; % Indica falha
         end
     end
 endfunction
 
-function [r, it] = metodoSecante(Q, g)
+function [r, it, valores] = metodoSecante(Q, g)
     f = @(y) 1 - ((Q^2 * (3 + y)) / (g * (3 * y + (y^2 / 2))^3));
 
-    % Define a tolerância para o erro absoluto e o erro inicial
+    % Define a tolerância para o erro absoluto
     Es = 1; % Tolerância em porcentagem
     Ea = Inf; % Erro absoluto inicial
+    valores = []; % Armazena os valores de r
 
     it = 0; % Inicializa o contador de iterações
     N = 20; % Define o número máximo de iterações
@@ -78,21 +94,22 @@ function [r, it] = metodoSecante(Q, g)
 
     while (it < N)
         xProx = (xPrevio * f(x) - x * f(xPrevio)) / (f(x) - f(xPrevio)); % Cálculo do próximo valor
+        valores = [valores; xProx]; % Armazena o novo valor de r
 
-        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
-                it + 1, x, f(x), Ea);
+        fprintf('Iteração %d: xr = %f, f(x) = %f\n', ...
+                it + 1, x, f(x));
 
-        Ea = calcularErroEstimativa(xProx, x); % Atualiza o erro
+        Ea = calcularErroEstimativa(xProx, x);
 
         if (Ea < Es)
-            fprintf("Raiz encontrada: %f\n", xProx);
+            fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
             r = xProx; % A raiz encontrada
             return; % Sai do loop
         end
 
         xPrevio = x; % Atualiza o valor anterior
         x = xProx; % Atualiza o valor atual
-        it = it + 1; % Incrementa contador de iterações
+        it = it + 1; % Incrementa o contador de iterações
     endwhile
 
     % Se o número máximo de iterações for atingido sem encontrar a raiz
@@ -114,6 +131,29 @@ function criar_tabela(itFalsaPosicao, rootFalsaPosicao, itSecante, rootSecante)
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
     fprintf("%-20s %-20d %-20f\n", "Falsa Posição", itFalsaPosicao, rootFalsaPosicao);
     fprintf("%-20s %-20d %-20f\n", "Secante", itSecante, rootSecante);
+endfunction
+
+function criar_graficos(itFalsaPosicao, valoresFalsaPosicao, itSecante, valoresSecante)
+    figure;
+
+    % Gráfico para Falsa Posição
+    subplot(2, 1, 1);
+    plot(1:length(valoresFalsaPosicao), valoresFalsaPosicao, 'b-', 'LineWidth', 2);
+    title('Convergência do Método da Falsa Posição');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Gráfico para Secante
+    subplot(2, 1, 2);
+    plot(1:length(valoresSecante), valoresSecante, 'r-', 'LineWidth', 2);
+    title('Convergência do Método da Secante');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Salvar gráficos
+    saveas(gcf, 'convergencia_metodos_falsa_posicao_secante.png');
 endfunction
 
 % Chama a função principal

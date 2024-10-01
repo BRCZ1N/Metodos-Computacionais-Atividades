@@ -11,23 +11,29 @@ function lista5Questao4()
 
     % Executar o método da Falsa Posição
     fprintf("Método da Falsa Posição:\n");
-    [rootFalsaPosicao, itFalsaPosicao] = metodoFalsaPosicao(f, Es);
+    [rootFalsaPosicao, itFalsaPosicao, valoresFalsaPosicao] = metodoFalsaPosicao(f, Es);
 
     % Executar o método de Iteração Linear
     fprintf("\nMétodo de Iteração Linear:\n");
-    [rootIteracaoLinear, itIteracaoLinear] = metodoIteracaoLinear(f, Vs, r, Es);
+    [rootIteracaoLinear, itIteracaoLinear, valoresIteracaoLinear] = metodoIteracaoLinear(f, Vs, r, Es);
 
     % Criar tabela comparativa
     criar_tabela(itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIteracaoLinear);
+
+    % Criar gráficos de convergência
+    criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, valoresIteracaoLinear);
 endfunction
 
-function [r, it] = metodoFalsaPosicao(f, E)
+function [r, it, valores] = metodoFalsaPosicao(f, E)
     a = 0;
     b = 1;
     Ea = inf;
     rPrevio = inf;
     it = 1;
     n = 20;
+
+    % Inicializando o vetor para armazenar os valores
+    valores = [];
 
     if (f(a) * f(b) > 0)
         disp("Erro: não há mudança de sinal!");
@@ -41,6 +47,10 @@ function [r, it] = metodoFalsaPosicao(f, E)
         while (it <= n)
             fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
                     it, a, b, r, f(r), Ea);
+
+            % Armazenar o valor da raiz atual
+            valores = [valores; r];
+
             if (it >= n || Ea <= E)
                 fprintf("Raiz encontrada: %f\n", r);
                 return;
@@ -58,7 +68,7 @@ function [r, it] = metodoFalsaPosicao(f, E)
 
             rPrevio = r;
             r = b - (fb * (a - b)) / (fa - fb);
-            Ea = calcularErroEstimativa(it, r, rPrevio);
+            Ea = calcularErroEstimativa(r, rPrevio);
         endwhile
 
         if it > n
@@ -67,20 +77,26 @@ function [r, it] = metodoFalsaPosicao(f, E)
     end
 endfunction
 
-function [r, it] = metodoIteracaoLinear(f, Vs, r, Es)
+function [r, it, valores] = metodoIteracaoLinear(f, Vs, r, Es)
     g = @(h) sqrt(3 * Vs / (3 * r * pi - pi * h)); % Função de iteração
     Ea = Inf;
     it = 0;
     n = 20;
     xr = 0;
 
+    % Inicializando o vetor para armazenar os valores
+    valores = [];
+
     while (it < n)
         xrPrevio = xr;
         xr = g(xrPrevio);
         it = it + 1;
 
+        % Armazenar o valor da raiz atual
+        valores = [valores; xr];
+
         if (xr != 0 && xrPrevio != 0)
-            Ea = calcularErroEstimativa(it, xr, xrPrevio);
+            Ea = calcularErroEstimativa(xr, xrPrevio);
         end
 
         fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
@@ -88,6 +104,7 @@ function [r, it] = metodoIteracaoLinear(f, Vs, r, Es)
 
         if (Ea < Es)
             fprintf("Iterações %d: Raiz encontrada: %f\n", it, xr);
+            r = xr; % Certificando-se de que o resultado final seja o correto
             return;
         end
     endwhile
@@ -96,8 +113,8 @@ function [r, it] = metodoIteracaoLinear(f, Vs, r, Es)
     r = NaN; % Indica falha
 endfunction
 
-function Ea = calcularErroEstimativa(it, resultadoAtual, resultadoPrev)
-    if it == 1 || resultadoPrev == Inf || resultadoAtual == 0
+function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
+    if resultadoPrev == Inf || resultadoAtual == 0
         Ea = Inf;
     else
         Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100;
@@ -109,6 +126,30 @@ function criar_tabela(itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIt
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
     fprintf("%-20s %-20d %-20f\n", "Falsa Posição", itFalsaPosicao, rootFalsaPosicao);
     fprintf("%-20s %-20d %-20f\n", "Iteração Linear", itIteracaoLinear, rootIteracaoLinear);
+endfunction
+
+function criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, valoresIteracaoLinear)
+    % Exemplo de como você poderia criar gráficos de convergência
+    figure;
+
+    % Gráfico para Falsa Posição
+    subplot(2, 1, 1);
+    plot(1:itFalsaPosicao, valoresFalsaPosicao, 'b-', 'LineWidth', 2);
+    title('Convergência do Método da Falsa Posição');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Gráfico para Iteração Linear
+    subplot(2, 1, 2);
+    plot(1:itIteracaoLinear, valoresIteracaoLinear, 'r-', 'LineWidth', 2);
+    title('Convergência do Método de Iteração Linear');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Salvar gráficos se necessário
+    saveas(gcf, 'convergencia_metodos_falsa_posicao_iteracao_linear.png');
 endfunction
 
 % Chama a função principal

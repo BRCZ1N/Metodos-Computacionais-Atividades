@@ -14,33 +14,37 @@ function lista5Questao3()
 
     % Executar o método da Secante
     fprintf("Método da Secante:\n");
-    [rootSecante, itSecante] = metodoSecante(f, Es);
+    [rootSecante, itSecante, valoresSecante] = metodoSecante(f, Es);
 
     % Executar o método de Newton-Raphson
     fprintf("\nMétodo de Newton-Raphson:\n");
-    [rootNewton, itNewton] = metodoNewtonRaphson(f, e, q, Q, raio, Es);
+    [rootNewton, itNewton, valoresNewton] = metodoNewtonRaphson(f, e, q, Q, raio, Es);
 
     % Criar tabela comparativa
     criar_tabela(itSecante, rootSecante, itNewton, rootNewton);
 
     % Criar gráficos de convergência
-    criar_graficos(itSecante, itNewton, rootSecante, rootNewton);
+    criar_graficos(itSecante, itNewton, valoresSecante, valoresNewton);
 endfunction
 
-function [r, it] = metodoSecante(f, Es)
+function [r, it, valores] = metodoSecante(f, Es)
     Ea = Inf; % Erro absoluto inicial
     xPrevio = 0.5; % Valor inicial
     x = 0.6; % Valor inicial
     it = 0; % Contador de iterações
     N = 20; % Número máximo de iterações
+    valores = []; % Array para armazenar valores de x
 
     for it = 0:(N-1)
         xProx = (xPrevio * f(x) - x * f(xPrevio)) / (f(x) - f(xPrevio)); % Cálculo do próximo x
-
         Ea = calcularErroEstimativa(xProx, x);
+
+        % Armazena o valor atual para o gráfico
+        valores = [valores; xProx];
+
         fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it, x, f(x), Ea);
 
-        if(Ea < Es)
+        if (Ea < Es)
             fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
             r = xProx;
             return;
@@ -54,7 +58,7 @@ function [r, it] = metodoSecante(f, Es)
     r = NaN; % Indica falha
 endfunction
 
-function [r, it] = metodoNewtonRaphson(f, e, q, Q, raio, Es)
+function [r, it, valores] = metodoNewtonRaphson(f, e, q, Q, raio, Es)
     df = @(x) (1 / (4 * pi * e)) * ...
         ((q * Q * (x^2 + raio^2)^(3/2)) - ...
          (3 * q * Q * x^2 * (x^2 + raio^2)^(1/2))) / ...
@@ -64,14 +68,18 @@ function [r, it] = metodoNewtonRaphson(f, e, q, Q, raio, Es)
     x = 0.5; % Valor inicial
     it = 0; % Contador de iterações
     N = 20; % Número máximo de iterações
+    valores = []; % Array para armazenar valores de x
 
     for it = 0:(N-1)
         xProx = x - f(x) / df(x); % Cálculo do próximo x
         Ea = calcularErroEstimativa(xProx, x);
 
+        % Armazena o valor atual para o gráfico
+        valores = [valores; xProx];
+
         fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it, x, f(x), Ea);
 
-        if(Ea < Es)
+        if (Ea < Es)
             fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
             r = xProx;
             return;
@@ -99,13 +107,13 @@ function criar_tabela(itSecante, rootSecante, itNewton, rootNewton)
     fprintf("%-20s %-20d %-20f\n", "Newton-Raphson", itNewton, rootNewton);
 endfunction
 
-function criar_graficos(itSecante, itNewton, rootSecante, rootNewton)
+function criar_graficos(itSecante, itNewton, valoresSecante, valoresNewton)
     % Exemplo de como você poderia criar gráficos de convergência
     figure;
 
     % Gráfico para Secante
     subplot(2, 1, 1);
-    plot(1:itSecante, linspace(rootSecante, rootSecante, itSecante), 'b-', 'LineWidth', 2);
+    plot(1:length(valoresSecante), valoresSecante, 'b-', 'LineWidth', 2);
     title('Convergência do Método da Secante');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -113,7 +121,7 @@ function criar_graficos(itSecante, itNewton, rootSecante, rootNewton)
 
     % Gráfico para Newton-Raphson
     subplot(2, 1, 2);
-    plot(1:itNewton, linspace(rootNewton, rootNewton, itNewton), 'r-', 'LineWidth', 2);
+    plot(1:length(valoresNewton), valoresNewton, 'r-', 'LineWidth', 2);
     title('Convergência do Método de Newton-Raphson');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

@@ -8,17 +8,20 @@ function lista5Questao5()
 
     % Executar o método da Bissecção
     fprintf("Método da Bissecção:\n");
-    [rootBisseccao, itBisseccao] = metodoBissecao(u, mi, q, g, v);
+    [rootBisseccao, itBisseccao, valoresBisseccao] = metodoBissecao(u, mi, q, g, v);
 
     % Executar o método da Secante
     fprintf("\nMétodo da Secante:\n");
-    [rootSecante, itSecante] = metodoSecante(u, mi, q, g, v);
+    [rootSecante, itSecante, valoresSecante] = metodoSecante(u, mi, q, g, v);
 
     % Criar tabela comparativa
     criar_tabela(itBisseccao, rootBisseccao, itSecante, rootSecante);
+
+    % Criar gráficos de convergência
+    criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante);
 endfunction
 
-function [r, it] = metodoBissecao(u, mi, q, g, v)
+function [r, it, valores] = metodoBissecao(u, mi, q, g, v)
     f = @(t) u * log(mi / (mi - q * t)) - g * t - v;
 
     a = 10;
@@ -28,6 +31,7 @@ function [r, it] = metodoBissecao(u, mi, q, g, v)
     Es = 1; % Tolerância em porcentagem
     Ea = Inf; % Erro absoluto inicial
     r = inf; % Valor inicial de r como infinito
+    valores = []; % Armazena os valores de r
 
     % Verifica se há mudança de sinal no intervalo [a, b]
     if (f(a) * f(b) > 0)
@@ -42,6 +46,7 @@ function [r, it] = metodoBissecao(u, mi, q, g, v)
         while (it <= n)
             rPrevio = r; % Armazena o valor anterior de r
             r = (a + b) / 2; % Calcula o ponto médio do intervalo
+            valores = [valores; r]; % Armazena o valor atual
 
             % Exibe os valores da iteração atual
             if it > 1
@@ -77,12 +82,13 @@ function [r, it] = metodoBissecao(u, mi, q, g, v)
     end
 endfunction
 
-function [r, it] = metodoSecante(u, mi, q, g, v)
+function [r, it, valores] = metodoSecante(u, mi, q, g, v)
     f = @(t) u * log(mi / (mi - q * t)) - g * t - v;
 
     % Define a tolerância para o erro absoluto
     Es = 1; % Tolerância em porcentagem
     Ea = Inf; % Erro absoluto inicial
+    valores = []; % Armazena os valores de r
 
     it = 0; % Inicializa o contador de iterações
     N = 20; % Define o número máximo de iterações
@@ -92,6 +98,7 @@ function [r, it] = metodoSecante(u, mi, q, g, v)
 
     while (it < N)
         xProx = (xPrevio * f(x) - x * f(xPrevio)) / (f(x) - f(xPrevio));
+        valores = [valores; xProx]; % Armazena o novo valor de r
 
         fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
                 it, x, f(x), Ea);
@@ -128,6 +135,29 @@ function criar_tabela(itBissecao, rootBisseccao, itSecante, rootSecante)
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
     fprintf("%-20s %-20d %-20f\n", "Bissecção", itBissecao, rootBisseccao);
     fprintf("%-20s %-20d %-20f\n", "Secante", itSecante, rootSecante);
+endfunction
+
+function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante)
+    figure;
+
+    % Gráfico para Bissecção
+    subplot(2, 1, 1);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    title('Convergência do Método da Bissecção');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Gráfico para Secante
+    subplot(2, 1, 2);
+    plot(1:length(valoresSecante), valoresSecante, 'r-', 'LineWidth', 2);
+    title('Convergência do Método da Secante');
+    xlabel('Iterações');
+    ylabel('Valor da Raiz');
+    grid on;
+
+    % Salvar gráficos
+    saveas(gcf, 'convergencia_metodos_bisseccao_secante.png');
 endfunction
 
 % Chama a função principal

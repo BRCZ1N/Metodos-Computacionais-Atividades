@@ -1,154 +1,153 @@
-% Métodos Numéricos: Bissecção e Falsa Posição
-
-function metodos_numericos()
-    % Parâmetros do problema
+function lista5Questao1()
     P = 35000;
     A = 8500;
     n = 7;
+
     f = @(i) (P * ((i * (1 + i).^n) / ((1 + i).^n - 1)) - A);
 
-    % Intervalo inicial
+    % Definir limites e tolerância
     a = 0.01;
     b = 0.3;
+    Es = 5e-5;
 
-    % Tolerância e variáveis para erro
-    Es = 5e-5; % Tolerância em porcentagem
-    Ea_bisseccao = Inf; % Erro absoluto inicial para bissecção
-    Ea_falsa = Inf; % Erro absoluto inicial para falsa posição
+    % Executar o método da bissecção
+    fprintf("Método da Bissecção:\n");
+    [rootBisseccao, itBisseccao, valoresBisseccao] = metodoBisseccao(f, a, b, Es);
 
-    % Métodos numéricos
-    [raiz_bisseccao, iteracoes_bisseccao] = bisseccao(f, a, b, Es, 30);
-    [raiz_falsa, iteracoes_falsa] = falsa_posicao(f, a, b, Es, 20);
+    % Executar o método da falsa posição
+    fprintf("\nMétodo da Falsa Posição:\n");
+    [rootFalsaPosicao, itFalsaPosicao, valoresFalsaPosicao] = metodoFalsaPosicao(f, a, b, Es);
 
-    % Tabela Comparativa
-    criar_tabela(iteracoes_bisseccao, iteracoes_falsa);
+    % Criar tabela comparativa
+    criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao);
 
-    % Gráficos de Convergência
-    criar_graficos(iteracoes_bisseccao, iteracoes_falsa);
-end
+    % Criar gráficos de convergência
+    criar_graficos(itBisseccao, valoresBisseccao, itFalsaPosicao, valoresFalsaPosicao);
+endfunction
 
-% Função para o método da bissecção
-function [r, iteracoes] = bisseccao(f, a, b, Es, n)
-    it = 1; % Inicializa o contador de iterações
-    r = inf; % Valor inicial da raiz
-    iteracoes = []; % Para armazenar iterações
+function [r, it, valores] = metodoBisseccao(f, a, b, Es)
+    Ea = Inf; % Erro absoluto inicial
+    r = inf; % Valor inicial de r
+    it = 0; % Contador de iterações
+    n = 30; % Número máximo de iterações
+    valores = []; % Armazena os valores de r
 
     if (f(a) * f(b) > 0)
         disp("Erro: não há mudança de sinal!");
-    else
-        while (it <= n)
-            rPrevio = r; % Armazena o valor anterior de r
-            r = (a + b) / 2; % Calcula o ponto médio
-            Ea = calcularErroEstimativa(r, rPrevio); % Calcula o erro
-
-            % Armazena dados da iteração
-            iteracoes = [iteracoes; it, a, b, r, f(r), Ea];
-
-            fprintf('Bissecção - Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
-                    it, a, b, r, f(r), Ea);
-
-            if (Ea <= Es)
-                fprintf("Raiz encontrada pela bissecção: %f\n", r);
-                break;
-            end
-
-            it = it + 1; % Incrementa o contador de iterações
-
-            % Atualiza o intervalo [a, b]
-            if (f(a) * f(r) < 0)
-                b = r; % Atualiza o limite superior
-            else
-                a = r; % Atualiza o limite inferior
-            end
-        endwhile
-
-        if it > n
-            fprintf("Bissecção falhou em %d iterações\n", it);
-        end
+        return;
     end
-end
 
-% Função para o método da falsa posição
-function [r, iteracoes] = falsa_posicao(f, a, b, Es, n)
-    it = 1; % Inicializa o contador de iterações
-    r = b - (f(b) * (a - b)) / (f(a) - f(b)); % Cálculo inicial da raiz
-    fa = f(a);
-    fb = f(b);
-    iteracoes = []; % Para armazenar iterações
+    while (it < n)
+        rPrevio = r;
+        r = (a + b) / 2; % Cálculo do ponto médio
+        valores = [valores; r]; % Armazena o valor atual
 
-    if (f(a) * f(b) > 0)
-        disp("Erro: não há mudança de sinal!");
-    else
-        while (it <= n)
-            Ea = calcularErroEstimativa(r, r); % Inicializa erro
-            fprintf('Falsa Posição - Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
-                    it, a, b, r, f(r), Ea);
-
-            if (it >= n || Ea <= Es)
-                fprintf("Raiz encontrada pela falsa posição: %f\n", r);
-                break;
-            end
-
-            if (f(a) * f(r) < 0)
-                b = r; % Atualiza b
-                fb = f(r);
-            else
-                a = r; % Atualiza a
-                fa = f(r);
-            end
-
-            it = it + 1; % Incrementa o contador de iterações
-
-            rPrevio = r; % Armazena o valor anterior de r
-            r = b - (fb * (a - b)) / (fa - fb); % Calcula nova raiz
+        if it > 0
             Ea = calcularErroEstimativa(r, rPrevio);
-            iteracoes = [iteracoes; it, a, b, r, f(r), Ea]; % Armazena dados da iteração
-        endwhile
-
-        if it > n
-            fprintf("Falsa Posição falhou em %d iterações\n", it);
         end
-    end
-end
 
-% Função para calcular o erro absoluto
+        fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
+                it + 1, a, b, r, f(r), Ea);
+
+        if (Ea <= Es)
+            fprintf("Raiz encontrada: %f\n", r);
+            break;
+        end
+
+        it = it + 1;
+
+        if (f(a) * f(r) < 0)
+            b = r; % Atualiza o limite superior
+        else
+            a = r; % Atualiza o limite inferior
+        end
+    endwhile
+
+    if it >= n
+        fprintf("Método falhou em %d iterações\n", it);
+    end
+endfunction
+
+function [r, it, valores] = metodoFalsaPosicao(f, a, b, Es)
+    Ea = Inf; % Erro absoluto inicial
+    rPrevio = inf; % Valor inicial de r
+    it = 0; % Contador de iterações
+    n = 20; % Número máximo de iterações
+    valores = []; % Armazena os valores de r
+
+    if (f(a) * f(b) > 0)
+        disp("Erro: não há mudança de sinal!");
+        return;
+    end
+
+    r = b - (f(b) * (a - b)) / (f(a) - f(b));  % Cálculo inicial da raiz
+    valores = [valores; r]; % Armazena o valor inicial
+
+    while (it < n)
+        fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Erro aproximado = %f\n', ...
+                it + 1, a, b, r, f(r), Ea);
+
+        if (it >= n || Ea <= Es)
+            fprintf("Raiz encontrada: %f\n", r);
+            break;
+        end
+
+        if (f(a) * f(r) < 0)
+            b = r; % Atualiza o limite superior
+        else
+            a = r; % Atualiza o limite inferior
+        end
+
+        rPrevio = r;
+        r = b - (f(b) * (a - b)) / (f(a) - f(b));
+        valores = [valores; r]; % Armazena o novo valor de r
+        Ea = calcularErroEstimativa(r, rPrevio);
+        it = it + 1;
+    endwhile
+
+    if it >= n
+        fprintf("Método falhou em %d iterações\n", it);
+    end
+endfunction
+
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
     if resultadoPrev == Inf
-        Ea = Inf; % Se o valor anterior for infinito, o erro é infinito
+        Ea = Inf;
     else
-        Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Erro percentual
+        Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100;
     end
-end
+endfunction
 
-% Função para criar tabela comparativa
-function criar_tabela(iteracoes_bisseccao, iteracoes_falsa)
+function criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao)
     fprintf("\nTabela Comparativa:\n");
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
-    fprintf("%-20s %-20d %-20f\n", "Bissecção", size(iteracoes_bisseccao, 1), iteracoes_bisseccao(end, 4));
-    fprintf("%-20s %-20d %-20f\n", "Falsa Posição", size(iteracoes_falsa, 1), iteracoes_falsa(end, 4));
-end
+    fprintf("%-20s %-20d %-20f\n", "Bissecção", itBisseccao, rootBisseccao);
+    fprintf("%-20s %-20d %-20f\n", "Falsa Posição", itFalsaPosicao, rootFalsaPosicao);
+endfunction
 
-% Função para criar gráficos de convergência
-function criar_graficos(iteracoes_bisseccao, iteracoes_falsa)
+function criar_graficos(itBisseccao, valoresBisseccao, itFalsaPosicao, valoresFalsaPosicao)
     figure;
 
     % Gráfico para Bissecção
-    subplot(1, 2, 1);
-    plot(iteracoes_bisseccao(:, 1), iteracoes_bisseccao(:, 4), '-o');
-    title('Convergência da Bissecção');
+    subplot(2, 1, 1);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    title('Convergência do Método da Bissecção');
     xlabel('Iterações');
-    ylabel('Valor Aproximado');
+    ylabel('Valor da Raiz');
     grid on;
 
     % Gráfico para Falsa Posição
-    subplot(1, 2, 2);
-    plot(iteracoes_falsa(:, 1), iteracoes_falsa(:, 4), '-o', 'color', 'orange');
-    title('Convergência da Falsa Posição');
+    subplot(2, 1, 2);
+    plot(1:length(valoresFalsaPosicao), valoresFalsaPosicao, 'r-', 'LineWidth', 2);
+    title('Convergência do Método da Falsa Posição');
     xlabel('Iterações');
-    ylabel('Valor Aproximado');
+    ylabel('Valor da Raiz');
     grid on;
-end
+
+    % Salvar gráficos
+    saveas(gcf, 'convergencia_metodos_bisseccao_falsa_posicao.png');
+endfunction
 
 % Chama a função principal
-metodos_numericos();
+lista5Questao1();
 
