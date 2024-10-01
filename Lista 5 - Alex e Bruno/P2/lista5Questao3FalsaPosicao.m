@@ -11,7 +11,7 @@ function lista5Questao3FalsaPosicao()
   a = 0;
   b = 0.5;
   E = 5e-4;
-  Ea = inf;
+  Ea = 100;
   rPrevio = inf;
 
   if (f(a) * f(b) > 0)

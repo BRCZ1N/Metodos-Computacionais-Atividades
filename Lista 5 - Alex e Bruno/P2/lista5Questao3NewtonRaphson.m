@@ -14,7 +14,7 @@ function lista5Questao3NewtonRaphson()
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 5^(-4); % Tolerância em porcentagem
-  Ea = inf; % Erro absoluto inicial (grande valor para iniciar o loop)
+  Ea = 100; % Erro absoluto inicial (grande valor para iniciar o loop)
   n = 0;
   N = 20; % Define o número máximo de iterações
   x = 0;
@@ -25,7 +25,7 @@ function lista5Questao3NewtonRaphson()
     Ea = calcularErroEstimativa(xProx,x);
 
     fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
-              n, x, f(x), Ea);
+              n+1, x, f(x), Ea);
 
     if(Ea < Es)
 

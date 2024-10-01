@@ -12,7 +12,7 @@ function lista5Questao3Secante()
 
   % Define a tolerância para o erro absoluto e o erro inicial
   Es = 5^(-4); % Tolerância em porcentagem
-  Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
+  Ea = 100; % Erro absoluto inicial (grande valor para iniciar o loop)
 
   it = 0; % Inicializa o contador de iterações
   N = 20; % Define o número máximo de iterações
