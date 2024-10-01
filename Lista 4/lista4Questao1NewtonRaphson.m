@@ -15,7 +15,7 @@ function lista4Questao1NewtonRaphson()
     xProx = x - f(x)/df(x);
     Ea = calcularErroEstimativa(xProx,x);
 
-    fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
+    fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
               n, x, f(x), Ea);
 
     if(Ea < Es)

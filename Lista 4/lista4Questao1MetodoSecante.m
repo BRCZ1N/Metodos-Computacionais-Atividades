@@ -17,7 +17,7 @@ function lista4Questao1MetodoSecante()
 
     xProx = (xPrevio*f(x) - x*f(xPrevio))/ (f(x) - f(xPrevio));
 
-    fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', ...
+    fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
               it, x, f(x), Ea);
 
     Ea = calcularErroEstimativa(xProx,x);
