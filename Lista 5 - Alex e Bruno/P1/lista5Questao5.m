@@ -136,7 +136,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresN
 
     % Gráfico para Bissecção
     subplot(2, 1, 1);
-    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-');
     title('Convergência do Método da Bissecção');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -144,7 +144,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresN
 
     % Gráfico para Newton-Raphson
     subplot(2, 1, 2);
-    plot(1:length(valoresNewtonRaphson), valoresNewtonRaphson, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresNewtonRaphson), valoresNewtonRaphson, 'r-');
     title('Convergência do Método de Newton-Raphson');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

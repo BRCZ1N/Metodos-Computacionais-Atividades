@@ -145,7 +145,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itIteracaoLinear, valores
 
     % Gráfico para Bissecção
     subplot(2, 1, 1);
-    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-');
     title('Convergência do Método da Bissecção');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -153,7 +153,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itIteracaoLinear, valores
 
     % Gráfico para Iteração Linear
     subplot(2, 1, 2);
-    plot(1:length(valoresIteracaoLinear), valoresIteracaoLinear, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresIteracaoLinear), valoresIteracaoLinear, 'r-');
     title('Convergência do Método de Iteração Linear');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

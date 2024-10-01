@@ -134,7 +134,7 @@ function criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, v
 
     % Gráfico para Falsa Posição
     subplot(2, 1, 1);
-    plot(1:itFalsaPosicao, valoresFalsaPosicao, 'b-', 'LineWidth', 2);
+    plot(1:itFalsaPosicao, valoresFalsaPosicao, 'b-');
     title('Convergência do Método da Falsa Posição');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -142,7 +142,7 @@ function criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, v
 
     % Gráfico para Iteração Linear
     subplot(2, 1, 2);
-    plot(1:itIteracaoLinear, valoresIteracaoLinear, 'r-', 'LineWidth', 2);
+    plot(1:itIteracaoLinear, valoresIteracaoLinear, 'r-');
     title('Convergência do Método de Iteração Linear');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

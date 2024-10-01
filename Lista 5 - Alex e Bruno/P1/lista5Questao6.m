@@ -138,7 +138,7 @@ function criar_graficos(itFalsaPosicao, valoresFalsaPosicao, itSecante, valoresS
 
     % Gráfico para Falsa Posição
     subplot(2, 1, 1);
-    plot(1:length(valoresFalsaPosicao), valoresFalsaPosicao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresFalsaPosicao), valoresFalsaPosicao, 'b-');
     title('Convergência do Método da Falsa Posição');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -146,7 +146,7 @@ function criar_graficos(itFalsaPosicao, valoresFalsaPosicao, itSecante, valoresS
 
     % Gráfico para Secante
     subplot(2, 1, 2);
-    plot(1:length(valoresSecante), valoresSecante, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresSecante), valoresSecante, 'r-');
     title('Convergência do Método da Secante');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

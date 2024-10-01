@@ -151,7 +151,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante
 
     % Gráfico para Bissecção
     subplot(2, 1, 1);
-    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-');
     title('Convergência do Método da Bissecção');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -159,7 +159,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante
 
     % Gráfico para Secante
     subplot(2, 1, 2);
-    plot(1:length(valoresSecante), valoresSecante, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresSecante), valoresSecante, 'r-');
     title('Convergência do Método da Secante');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

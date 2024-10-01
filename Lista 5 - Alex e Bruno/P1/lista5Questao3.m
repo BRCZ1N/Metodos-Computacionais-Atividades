@@ -113,7 +113,7 @@ function criar_graficos(itSecante, itNewton, valoresSecante, valoresNewton)
 
     % Gráfico para Secante
     subplot(2, 1, 1);
-    plot(1:length(valoresSecante), valoresSecante, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresSecante), valoresSecante, 'b-');
     title('Convergência do Método da Secante');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -121,7 +121,7 @@ function criar_graficos(itSecante, itNewton, valoresSecante, valoresNewton)
 
     % Gráfico para Newton-Raphson
     subplot(2, 1, 2);
-    plot(1:length(valoresNewton), valoresNewton, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresNewton), valoresNewton, 'r-');
     title('Convergência do Método de Newton-Raphson');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

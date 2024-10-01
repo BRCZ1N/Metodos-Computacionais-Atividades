@@ -140,20 +140,64 @@ function criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosic
 endfunction
 
 function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLinear, valoresNewtonRaphson, valoresSecante)
-    % Função para criar gráficos de convergência
+    % Função para criar gráficos de convergência separados para cada método
+
     figure;
-    plot(valoresBisseccao, '-o'); hold on;
-    plot(valoresFalsaPosicao, '-x');
-    plot(valoresIteracaoLinear, '-s');
-    plot(valoresNewtonRaphson, '-d');
-    plot(valoresSecante, '-p');
+    plot(valoresBisseccao, 'b-'); hold on;
+    plot(valoresFalsaPosicao, 'g-');
+    plot(valoresIteracaoLinear, 'm-');
+    plot(valoresNewtonRaphson, 'c-');
+    plot(valoresSecante, 'r-');
     legend('Bissecção', 'Falsa Posição', 'Iteração Linear', 'Newton-Raphson', 'Secante');
     xlabel('Iterações');
     ylabel('Valor de xr');
-    title('Convergência dos Métodos');
+    title('Convergência dos Métodos (Gráfico Combinado)');
     grid on;
-    saveas(gcf, 'graficos_convergencia_lista5Questao3.png');  % Salva o gráfico gerado
+    saveas(gcf, 'graficos_convergencia_combinado_lista5Questao3.png');  % Salva o gráfico combinado
+
+    % Gráfico para Bissecção
+    figure;
+    plot(valoresBisseccao, 'b-', 'DisplayName', 'Bissecção');
+    xlabel('Iterações');
+    ylabel('Raiz Aproximada');
+    title('Gráfico de Convergência - Bissecção');
+    legend show;
+
+    % Gráfico para Falsa Posição
+    figure;
+    plot(valoresFalsaPosicao, 'g-', 'DisplayName', 'Falsa Posição');
+    xlabel('Iterações');
+    ylabel('Raiz Aproximada');
+    title('Gráfico de Convergência - Falsa Posição');
+    legend show;
+
+    % Gráfico para Iteração Linear
+    figure;
+    plot(valoresIteracaoLinear, 'm-', 'DisplayName', 'Iteração Linear');
+    xlabel('Iterações');
+    ylabel('Raiz Aproximada');
+    title('Gráfico de Convergência - Iteração Linear');
+    legend show;
+
+    % Gráfico para Newton-Raphson
+    figure;
+    plot(valoresNewtonRaphson, 'c-', 'DisplayName', 'Newton-Raphson');
+    xlabel('Iterações');
+    ylabel('Raiz Aproximada');
+    title('Gráfico de Convergência - Newton-Raphson');
+    legend show;
+
+    % Gráfico para Secante
+    figure;
+    plot(valoresSecante, 'r-', 'DisplayName', 'Secante');
+    xlabel('Iterações');
+    ylabel('Raiz Aproximada');
+    title('Gráfico de Convergência - Secante');
+    legend show;
 endfunction
+
+
+
 
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
     if resultadoPrev == Inf
