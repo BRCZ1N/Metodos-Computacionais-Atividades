@@ -4,7 +4,7 @@ function lista4Questao1MetodoSecante()
 
   % Define a tolerância para o erro e o erro inicial
   Es = 10^(-4);  % Tolerância
-  Ea = 100;      % Erro  inicial
+  Ea = 100;      % Erro inicial
 
   it = 0;        % Inicializa o contador de iterações
   N = 20;        % Número máximo de iterações
@@ -12,23 +12,23 @@ function lista4Questao1MetodoSecante()
   xPrevio = -1;  % Valor anterior de x
 
   % Loop para o método da secante
-  for n = 0:(N-1)
+  for n = 1:N
     xProx = (xPrevio*f(x) - x*f(xPrevio)) / (f(x) - f(xPrevio));
 
     % Incrementa o número de iterações
     it = it + 1;
 
+    % Calcula o erro estimado antes de imprimir
+    Ea = calcularErroEstimativa(xProx, x);
+
     % Exibe as informações da iteração
     fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
               it, xProx, f(xProx), Ea);
 
-    % Calcula o erro estimado
-    Ea = calcularErroEstimativa(xProx, x);
-
     % Verifica se o erro é menor que a tolerância
     if (Ea < Es)
-      fprintf('Iteração %d: Raiz encontrada: %f\n', it, xProx);
-      break;
+      fprintf('Raiz encontrada em %d iterações: %f\n', it, xProx);
+      return;  % Encerra a função se a raiz for encontrada
     end
 
     % Atualiza os valores de x e xPrevio para a próxima iteração
@@ -37,15 +37,18 @@ function lista4Questao1MetodoSecante()
   endfor
 
   % Se o número máximo de iterações for atingido sem encontrar a raiz
-  if (n == N-1)
-    fprintf('Método falhou em %d iterações\n', it);
-  end
+  fprintf('Método falhou em %d iterações\n', it);
 
 endfunction
 
 % Função para calcular o erro
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
-  Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Calcula o erro percentual
+  % Evita divisão por zero
+  if resultadoAtual == 0
+    Ea = Inf;  % Erro infinito se resultadoAtual for zero
+  else
+    Ea = abs((resultadoAtual - resultadoPrev) / resultadoAtual) * 100; % Calcula o erro percentual
+  end
 endfunction
 
 % Chama a função principal
