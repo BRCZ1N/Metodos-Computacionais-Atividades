@@ -27,7 +27,7 @@ function lista5Questao3()
     [rootSecante, itSecante, valoresSecante] = metodoSecante(e, F, q, Q, raio);
 
     % Criar tabela comparativa
-    criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIteracaoLinear, itNewtonRaphson+1, rootNewtonRaphson, itSecante, rootSecante);
+    criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIteracaoLinear, itNewtonRaphson+1, rootNewtonRaphson, itSecante+1, rootSecante);
 
     % Criar gráficos de convergência
     criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLinear, valoresNewtonRaphson, valoresSecante);
@@ -142,6 +142,7 @@ endfunction
 function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLinear, valoresNewtonRaphson, valoresSecante)
     % Função para criar gráficos de convergência separados para cada método
 
+    % Gráfico combinado
     figure;
     plot(valoresBisseccao, 'b-'); hold on;
     plot(valoresFalsaPosicao, 'g-');
@@ -162,6 +163,7 @@ function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLi
     ylabel('Raiz Aproximada');
     title('Gráfico de Convergência - Bissecção');
     legend show;
+    saveas(gcf, 'graficos_convergencia_bisseccao_lista5Questao3.png');  % Salva o gráfico da bissecção
 
     % Gráfico para Falsa Posição
     figure;
@@ -170,6 +172,7 @@ function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLi
     ylabel('Raiz Aproximada');
     title('Gráfico de Convergência - Falsa Posição');
     legend show;
+    saveas(gcf, 'graficos_convergencia_falsa_posicao_lista5Questao3.png');  % Salva o gráfico da falsa posição
 
     % Gráfico para Iteração Linear
     figure;
@@ -178,6 +181,7 @@ function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLi
     ylabel('Raiz Aproximada');
     title('Gráfico de Convergência - Iteração Linear');
     legend show;
+    saveas(gcf, 'graficos_convergencia_iteracao_linear_lista5Questao3.png');  % Salva o gráfico da iteração linear
 
     % Gráfico para Newton-Raphson
     figure;
@@ -186,6 +190,7 @@ function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLi
     ylabel('Raiz Aproximada');
     title('Gráfico de Convergência - Newton-Raphson');
     legend show;
+    saveas(gcf, 'graficos_convergencia_newton_raphson_lista5Questao3.png');  % Salva o gráfico do Newton-Raphson
 
     % Gráfico para Secante
     figure;
@@ -194,8 +199,8 @@ function criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLi
     ylabel('Raiz Aproximada');
     title('Gráfico de Convergência - Secante');
     legend show;
+    saveas(gcf, 'graficos_convergencia_secante_lista5Questao3.png');  % Salva o gráfico da secante
 endfunction
-
 
 
 

@@ -65,7 +65,7 @@ function [r, it, valores] = metodoNewtonRaphson(f, e, q, Q, raio, Es)
         (x^2 + raio^2)^3;
 
     Ea = Inf; % Erro absoluto inicial
-    x = 0.5; % Valor inicial
+    x = 0; % Valor inicial
     it = 0; % Contador de iterações
     N = 20; % Número máximo de iterações
     valores = []; % Array para armazenar valores de x
