@@ -3,9 +3,9 @@ function lista4Questao1NewtonRaphson()
   f = @(x) x.^2 - 3*x + exp(x) - 2;
   df = @(x) 2*x - 3 + exp(x);
 
-  % Define a tolerância para o erro absoluto e o erro inicial
+  % Define a tolerância para o erro e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
-  Ea = inf; % Erro absoluto inicial (grande valor para iniciar o loop)
+  Ea = inf; % Erro  inicial (grande valor para iniciar o loop)
   n = 0;
   N = 20; % Define o número máximo de iterações
   x = 0;
@@ -16,7 +16,7 @@ function lista4Questao1NewtonRaphson()
     Ea = calcularErroEstimativa(xProx,x);
 
     fprintf('Iteração %d: xr = %f, f(xr) = %f, Ea = %f\n', ...
-              n, x, f(x), Ea);
+              n+1, x, f(x), Ea);
 
     if(Ea < Es)
 
@@ -35,7 +35,7 @@ function lista4Questao1NewtonRaphson()
 
 endfunction
 
-% Função para calcular o erro absoluto
+% Função para calcular o erro
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
   if resultadoPrev == Inf
     Ea = Inf; % Se o valor anterior for infinito, o erro é infinito
