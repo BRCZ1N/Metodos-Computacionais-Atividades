@@ -27,7 +27,7 @@ function lista5Questao3()
     [rootSecante, itSecante, valoresSecante] = metodoSecante(e, F, q, Q, raio);
 
     % Criar tabela comparativa
-    criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIteracaoLinear, itNewtonRaphson, rootNewtonRaphson, itSecante, rootSecante);
+    criar_tabela(itBisseccao, rootBisseccao, itFalsaPosicao, rootFalsaPosicao, itIteracaoLinear, rootIteracaoLinear, itNewtonRaphson+1, rootNewtonRaphson, itSecante, rootSecante);
 
     % Criar gráficos de convergência
     criar_graficos(valoresBisseccao, valoresFalsaPosicao, valoresIteracaoLinear, valoresNewtonRaphson, valoresSecante);

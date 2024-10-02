@@ -7,7 +7,7 @@ function lista5Questao4()
     f = @(h) ((pi * h.^2) / 3) * (3 * r - h) - Vs;
 
     % Define a tolerância para o erro absoluto
-    Es = 5e-5; % Tolerância em porcentagem
+    Es = 5e-4; % Tolerância em porcentagem
 
     % Executar o método da Falsa Posição
     fprintf("Método da Falsa Posição:\n");

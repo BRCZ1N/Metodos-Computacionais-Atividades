@@ -11,7 +11,7 @@ function lista5Questao2()
     b = 50; % Tempo final (em anos)
 
     % Define a tolerância para o erro absoluto
-    Es = 5e-5; % Tolerância em porcentagem
+    Es = 5e-4; % Tolerância em porcentagem
 
     % Executar o método da bissecção
     fprintf("Método da Bissecção:\n");
@@ -34,10 +34,10 @@ function lista5Questao2()
     end
 
     % Criar tabela comparativa
-    criar_tabela(itBisseccao, rootBisseccao, itSecante, rootSecante);
+    criar_tabela(itBisseccao+1, rootBisseccao, itSecante+1, rootSecante);
 
     % Criar gráficos de convergência
-    criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante);
+    criar_graficos(itBisseccao+1, valoresBisseccao, itSecante+1, valoresSecante);
 endfunction
 
 function [r, it, valores] = metodoBisseccao(Pu_max, Ps_max, P0, ku, ks, a, b, Es)
@@ -102,7 +102,7 @@ function [r, it, valores] = metodoSecante(Pu_max, Ps_max, P0, ku, ks, Es)
         valores = [valores; xProx]; % Armazena o valor atual
 
         % Mensagem de depuração para ver os valores
-        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it + 1, xProx, f(xProx), Ea);
+        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it+1, xProx, f(xProx), Ea);
 
         Ea = calcularErroEstimativa(xProx, x); % Cálculo do erro absoluto
 
@@ -118,7 +118,7 @@ function [r, it, valores] = metodoSecante(Pu_max, Ps_max, P0, ku, ks, Es)
         it = it + 1; % Incrementa o contador de iterações
     endwhile
 
-    fprintf("Método falhou em %d iterações\n", it);
+    fprintf("Método falhou em %d iterações\n", it+1);
 
     if it >= N
         r = NaN; % Atribuir NaN para indicar que não foi encontrada raiz
@@ -142,8 +142,8 @@ endfunction
 function criar_tabela(itBisseccao, rootBisseccao, itSecante, rootSecante)
     fprintf("\nTabela Comparativa:\n");
     fprintf("%-20s %-20s %-20s\n", "Método", "Número de Iterações", "Resultado Final");
-    fprintf("%-20s %-20d %-20f\n", "Bissecção", itBisseccao, rootBisseccao);
-    fprintf("%-20s %-20d %-20f\n", "Secante", itSecante, rootSecante);
+    fprintf("%-20s %-20d %-20.6f\n", "Bissecção", itBisseccao, rootBisseccao);
+    fprintf("%-20s %-20d %-20.6f\n", "Secante", itSecante, rootSecante);
 endfunction
 
 function criar_graficos(itBisseccao, valoresBisseccao, itSecante, valoresSecante)

@@ -34,6 +34,7 @@ function [r, it, valores] = metodoFalsaPosicao(Q, g)
     if (f(a) * f(b) > 0)
         disp("Erro: não há mudança de sinal!");
         r = NaN; % Indica falha
+        it = 0; % Ajusta para zero iterações, se falhar
         return;
     else
         it = 1; % Inicializa o contador de iterações
@@ -87,22 +88,22 @@ function [r, it, valores] = metodoSecante(Q, g)
     Ea = Inf; % Erro absoluto inicial
     valores = []; % Armazena os valores de r
 
-    it = 0; % Inicializa o contador de iterações
+    it = 1; % Inicializa o contador de iterações
     N = 20; % Define o número máximo de iterações
     x = 2; % Estimativa inicial
     xPrevio = 1; % Segunda estimativa inicial
 
-    while (it < N)
+    while (it <= N)
         xProx = (xPrevio * f(x) - x * f(xPrevio)) / (f(x) - f(xPrevio)); % Cálculo do próximo valor
         valores = [valores; xProx]; % Armazena o novo valor de r
 
         fprintf('Iteração %d: xr = %f, f(x) = %f\n', ...
-                it + 1, x, f(x));
+                it, x, f(x));
 
         Ea = calcularErroEstimativa(xProx, x);
 
         if (Ea < Es)
-            fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
+            fprintf("Iterações %d: Raiz encontrada: %f\n", it, xProx);
             r = xProx; % A raiz encontrada
             return; % Sai do loop
         end
@@ -155,7 +156,4 @@ function criar_graficos(itFalsaPosicao, valoresFalsaPosicao, itSecante, valoresS
     % Salvar gráficos
     saveas(gcf, 'convergencia_metodos_falsa_posicao_secante.png');
 endfunction
-
-% Chama a função principal
-lista5Questao6();
 

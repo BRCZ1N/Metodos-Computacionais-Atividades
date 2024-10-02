@@ -21,16 +21,16 @@ function lista5Questao3()
     [rootNewton, itNewton, valoresNewton] = metodoNewtonRaphson(f, e, q, Q, raio, Es);
 
     % Criar tabela comparativa
-    criar_tabela(itSecante, rootSecante, itNewton, rootNewton);
+    criar_tabela(itSecante+1, rootSecante, itNewton+1, rootNewton);
 
     % Criar gráficos de convergência
-    criar_graficos(itSecante, itNewton, valoresSecante, valoresNewton);
+    criar_graficos(itSecante+1, itNewton+1, valoresSecante, valoresNewton);
 endfunction
 
 function [r, it, valores] = metodoSecante(f, Es)
     Ea = Inf; % Erro absoluto inicial
-    xPrevio = 0.5; % Valor inicial
-    x = 0.6; % Valor inicial
+    xPrevio = 0; % Valor inicial
+    x = 0.5; % Valor inicial
     it = 0; % Contador de iterações
     N = 20; % Número máximo de iterações
     valores = []; % Array para armazenar valores de x
@@ -42,7 +42,7 @@ function [r, it, valores] = metodoSecante(f, Es)
         % Armazena o valor atual para o gráfico
         valores = [valores; xProx];
 
-        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it, x, f(x), Ea);
+        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it+1, x, f(x), Ea);
 
         if (Ea < Es)
             fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
@@ -54,7 +54,7 @@ function [r, it, valores] = metodoSecante(f, Es)
         x = xProx;
     endfor
 
-    fprintf("Método falhou em %d iterações\n", it);
+    fprintf("Método falhou em %d iterações\n", it + 1);
     r = NaN; % Indica falha
 endfunction
 
@@ -77,7 +77,7 @@ function [r, it, valores] = metodoNewtonRaphson(f, e, q, Q, raio, Es)
         % Armazena o valor atual para o gráfico
         valores = [valores; xProx];
 
-        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it, x, f(x), Ea);
+        fprintf('Iteração %d: xr = %f, f(x) = %f, Ea = %f\n', it + 1, x, f(x), Ea);
 
         if (Ea < Es)
             fprintf("Iterações %d: Raiz encontrada: %f\n", it + 1, xProx);
