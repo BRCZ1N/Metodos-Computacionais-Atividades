@@ -50,7 +50,7 @@ function Ab = gaussEliminacao(Ab, n)
     Ab = gaussPivotagem(Ab, n, k);  % Aplica pivotagem
     for i = k+1:n  % Para cada linha abaixo da linha k
        fator = Ab(i, k) / Ab(k, k);  % Calcula o fator de eliminação
-       Ab(i, k:end) = Ab(i, k:end) - fator * Ab(k, k:end);  % Atualiza a linha
+       Ab(i, k:n+1) = Ab(i, k:n+1) - fator * Ab(k, k:n+1);  % Atualiza a linha
     end
   end
 
@@ -68,9 +68,9 @@ endfunction
 
 function Ab = gaussPivotagem(Ab, n, k)
   % Aplica a pivotagem para melhorar a estabilidade numérica
-  [~, i] = max(Ab(k:n, k));  % Encontra o índice do maior elemento
+  [maior, i] = max(abs(Ab(k:n, k)));  % Encontra o índice do maior elemento
   ipr = i + k - 1;  % Ajusta o índice
-  if ipr ~= k
+  if ipr != k
       Ab([k, ipr], :) = Ab([ipr, k], :);  % Troca as linhas
   end
 endfunction
@@ -78,9 +78,9 @@ endfunction
 function x = gaussSubstituicao(Ab, n)
   % Resolve o sistema usando substituição regressiva
   x = zeros(n, 1);  % Inicializa o vetor de soluções
-  x(n) = Ab(n, end) / Ab(n, n);  % Calcula a última variável
+  x(n) = Ab(n, n+1) / Ab(n, n);  % Calcula a última variável
   for i = n-1:-1:1  % Retrocede para calcular as outras variáveis
-    x(i) = (Ab(i, end) - Ab(i, i+1:n) * x(i+1:n)) / Ab(i, i);
+    x(i) = (Ab(i, n+1) - Ab(i, i+1:n) * x(i+1:n)) / Ab(i, i);
   end
 endfunction
 

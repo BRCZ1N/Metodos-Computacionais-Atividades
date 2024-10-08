@@ -42,10 +42,13 @@ function [A, b] = gaussEliminacao(A, b, n)
   for k = 1:n-1
     for i = k + 1:n
       fator = A(i, k) / A(k, k);  % Calcula o fator de eliminação
+      disp(['Fator de eliminação (linha ', num2str(i), '): ', num2str(fator)]);  % Exibe o fator
       for j = k:n
         A(i, j) = A(i, j) - fator * A(k, j);  % Atualiza a linha i
       endfor
       b(i) = b(i) - fator * b(k);  % Atualiza o vetor b
+      disp('Matriz A e vetor b após atualização:');
+      debug(A, b, n);  % Exibe a matriz atualizada
     endfor
   endfor
 endfunction
@@ -70,12 +73,15 @@ endfunction
 function x = gaussSubstituicao(A, b, n)
   % Realiza a substituição reversa para encontrar as soluções
   x(n) = b(n) / A(n, n);  % Solução para a última variável
+  disp(['x', num2str(n), ' = ', num2str(x(n))]);  % Exibe a solução para x(n)
+
   for i = n-1:-1:1
     soma = b(i);  % Inicia a soma com o valor correspondente em b
     for j = i+1:n
       soma = soma - A(i, j) * x(j);  % Subtrai contribuições das variáveis já resolvidas
     endfor
     x(i) = soma / A(i, i);  % Calcula a solução para a variável i
+    disp(['x', num2str(i), ' = ', num2str(x(i))]);  % Exibe a solução para x(i)
   endfor
 endfunction
 
