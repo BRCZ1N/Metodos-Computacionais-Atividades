@@ -15,10 +15,10 @@ function lista5Questao5()
     [rootNewtonRaphson, itNewtonRaphson, valoresNewtonRaphson] = metodoNewtonRaphson(u, mi, q, g, v);
 
     % Criar tabela comparativa
-    criar_tabela(itBisseccao, rootBisseccao, itNewtonRaphson, rootNewtonRaphson);
+    criar_tabela(itBisseccao, rootBisseccao, itNewtonRaphson+1, rootNewtonRaphson);
 
     % Criar gráficos de convergência
-    criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresNewtonRaphson);
+    criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson+1, valoresNewtonRaphson);
 endfunction
 
 function [r, it, valores] = metodoBisseccao(u, mi, q, g, v)
@@ -86,7 +86,7 @@ function [r, it, valores] = metodoNewtonRaphson(u, mi, q, g, v)
     f = @(t) u * log(mi / (mi - q * t)) - g * t - v;
     df = @(t) (u * q / (mi - q * t)) - g; % Derivada da função
 
-    x = 50; % Valor inicial para t
+    x = 0; % Valor inicial para t
     it = 0; % Inicializa o contador de iterações
     N = 20; % Define o número máximo de iterações
     Ea = Inf; % Erro absoluto inicial
@@ -111,7 +111,7 @@ function [r, it, valores] = metodoNewtonRaphson(u, mi, q, g, v)
     endwhile
 
     % Se o número máximo de iterações for atingido sem encontrar a raiz
-    fprintf("Método falhou em %d iterações\n", it);
+    fprintf("Método falhou em %d iterações\n", it+1);
     r = NaN; % Indica falha
 endfunction
 
@@ -136,7 +136,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresN
 
     % Gráfico para Bissecção
     subplot(2, 1, 1);
-    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-');
     title('Convergência do Método da Bissecção');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -144,7 +144,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itNewtonRaphson, valoresN
 
     % Gráfico para Newton-Raphson
     subplot(2, 1, 2);
-    plot(1:length(valoresNewtonRaphson), valoresNewtonRaphson, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresNewtonRaphson), valoresNewtonRaphson, 'r-');
     title('Convergência do Método de Newton-Raphson');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

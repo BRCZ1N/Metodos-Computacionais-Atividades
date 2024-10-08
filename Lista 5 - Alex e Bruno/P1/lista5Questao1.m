@@ -15,7 +15,7 @@ function lista5Questao1()
     [rootBisseccao, itBisseccao, valoresBisseccao] = metodoBisseccao(f, a, b, Es);
 
     % Verifica se o método da bissecção retornou valores válidos
-    if isempty(rootBisseccao) || isempty(itBisseccao)
+    if isempty(rootBisseccao)
         disp("Erro no método da bissecção.");
         return;
     end
@@ -25,7 +25,7 @@ function lista5Questao1()
     [rootIteracaoLinear, itIteracaoLinear, valoresIteracaoLinear] = metodoIteracaoLinear(f, P, A, n, Es);
 
     % Verifica se o método de iteração linear retornou valores válidos
-    if isempty(rootIteracaoLinear) || isempty(itIteracaoLinear)
+    if isempty(rootIteracaoLinear)
         disp("Erro no método de iteração linear.");
         return;
     end
@@ -39,7 +39,7 @@ endfunction
 
 function [r, it, valores] = metodoBisseccao(f, a, b, Es)
     Ea = Inf; % Erro absoluto inicial
-    r = [];  % Inicializa como vazio para evitar erros
+    r = NaN;  % Inicializa como NaN para evitar erros
     it = 0;   % Contador de iterações
     n = 30;   % Número máximo de iterações
     valores = []; % Armazena os valores de r
@@ -61,12 +61,14 @@ function [r, it, valores] = metodoBisseccao(f, a, b, Es)
         fprintf('Iteração %d: a = %f, b = %f, r = %f, f(r) = %f, Aproximado = %f\n', ...
                 it + 1, a, b, r, f(r), Ea);
 
+        % Verificação da convergência
         if (Ea <= Es)
             fprintf("Raiz encontrada: %f\n", r);
-            break;
+            it = it + 1;  % Incrementa apenas se a raiz for encontrada
+            return;  % Retorna a raiz encontrada
         end
 
-        it = it + 1;
+        it = it + 1; % Incrementa o contador de iterações
 
         if (f(a) * f(r) < 0)
             b = r; % Atualiza o limite superior
@@ -75,14 +77,8 @@ function [r, it, valores] = metodoBisseccao(f, a, b, Es)
         end
     endwhile
 
-    if it >= n
-        fprintf("Método falhou em %d iterações\n", it);
-    end
-
-    % Adicione uma verificação se 'r' é vazio
-    if isempty(r)
-        r = NaN; % Atribuir NaN para indicar que não foi encontrada raiz
-    end
+    % Se o loop terminar sem encontrar uma raiz, retorna NaN
+    r = NaN;
 endfunction
 
 function [r, it, valores] = metodoIteracaoLinear(f, P, A, n, Es)
@@ -111,18 +107,14 @@ function [r, it, valores] = metodoIteracaoLinear(f, P, A, n, Es)
 
         % Verificação da convergência
         if (Ea < Es)
-            fprintf("Iterações %d: Raiz encontrada: %f\n", it, xr);
+            fprintf("Raiz encontrada: %f\n", xr);
             r = xr; % Atribui r como a raiz encontrada
             return; % Encerra a função se a raiz for encontrada
         end
     endwhile
 
-    fprintf("Método falhou em %d iterações\n", it);
-
-    % Adicione uma verificação se 'xr' não foi atualizado
-    if it == nIter
-        r = NaN; % Atribuir NaN para indicar que não foi encontrada raiz
-    end
+    % Se o loop terminar sem encontrar uma raiz, retorna NaN
+    r = NaN;
 endfunction
 
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
@@ -145,7 +137,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itIteracaoLinear, valores
 
     % Gráfico para Bissecção
     subplot(2, 1, 1);
-    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-', 'LineWidth', 2);
+    plot(1:length(valoresBisseccao), valoresBisseccao, 'b-');
     title('Convergência do Método da Bissecção');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -153,7 +145,7 @@ function criar_graficos(itBisseccao, valoresBisseccao, itIteracaoLinear, valores
 
     % Gráfico para Iteração Linear
     subplot(2, 1, 2);
-    plot(1:length(valoresIteracaoLinear), valoresIteracaoLinear, 'r-', 'LineWidth', 2);
+    plot(1:length(valoresIteracaoLinear), valoresIteracaoLinear, 'r-');
     title('Convergência do Método de Iteração Linear');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

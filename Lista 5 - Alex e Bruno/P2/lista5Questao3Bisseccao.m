@@ -10,6 +10,9 @@ function lista5Questao3Bisseccao()
 
   a = 0;
   b = 0.5;
+  r = inf; % Valor inicial de r (raiz) como infinito
+  Es = 5^(-4); % Tolerância em porcentagem
+  Ea = 100; % Erro absoluto inicial (grande valor para iniciar o loop)
 
   % Verifica se há mudança de sinal no intervalo [a, b]
   if (f(a) * f(b) > 0)
@@ -20,6 +23,7 @@ function lista5Questao3Bisseccao()
 
     % Loop do método da bissecção
     while (it <= n)
+
       rPrevio = r; % Armazena o valor anterior de r
       r = (a + b) / 2; % Calcula o ponto médio do intervalo
 

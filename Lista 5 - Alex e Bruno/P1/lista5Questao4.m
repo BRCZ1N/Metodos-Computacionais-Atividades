@@ -7,7 +7,7 @@ function lista5Questao4()
     f = @(h) ((pi * h.^2) / 3) * (3 * r - h) - Vs;
 
     % Define a tolerância para o erro absoluto
-    Es = 5e-5; % Tolerância em porcentagem
+    Es = 5e-4; % Tolerância em porcentagem
 
     % Executar o método da Falsa Posição
     fprintf("Método da Falsa Posição:\n");
@@ -134,7 +134,7 @@ function criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, v
 
     % Gráfico para Falsa Posição
     subplot(2, 1, 1);
-    plot(1:itFalsaPosicao, valoresFalsaPosicao, 'b-', 'LineWidth', 2);
+    plot(1:itFalsaPosicao, valoresFalsaPosicao, 'b-');
     title('Convergência do Método da Falsa Posição');
     xlabel('Iterações');
     ylabel('Valor da Raiz');
@@ -142,7 +142,7 @@ function criar_graficos(itFalsaPosicao, itIteracaoLinear, valoresFalsaPosicao, v
 
     % Gráfico para Iteração Linear
     subplot(2, 1, 2);
-    plot(1:itIteracaoLinear, valoresIteracaoLinear, 'r-', 'LineWidth', 2);
+    plot(1:itIteracaoLinear, valoresIteracaoLinear, 'r-');
     title('Convergência do Método de Iteração Linear');
     xlabel('Iterações');
     ylabel('Valor da Raiz');

@@ -9,9 +9,9 @@ function lista4Questao1IteracaoLinear()
   g = @(x)(x^(2)+exp(x)-2)/3;
 
 
-  % Define a tolerância para o erro absoluto e o erro inicial
+  % Define a tolerância para o erro  e o erro inicial
   Es = 10^(-4); % Tolerância em porcentagem
-  Ea = Inf; % Erro absoluto inicial (grande valor para iniciar o loop)
+  Ea = Inf; % Erro  inicial (grande valor para iniciar o loop)
 
   it = 0; % Inicializa o contador de iterações
   n = 10; % Define o número máximo de iterações
@@ -48,7 +48,7 @@ function lista4Questao1IteracaoLinear()
 
 endfunction
 
-% Função para calcular o erro absoluto
+% Função para calcular o erro
 function Ea = calcularErroEstimativa(resultadoAtual, resultadoPrev)
   if resultadoPrev == Inf
     Ea = Inf; % Se o valor anterior for infinito, o erro é infinito
