@@ -21,11 +21,10 @@ function lista6Questao1GaussEliminacaoSP()
 
   % Matriz de valores independentes
   b = [8; 25; 18; 72];
-  x = [];  % Inicializa vetor de soluções
 
-  n = 4;  % Número de equações
+  n = size(A, 1);  % Obtém o número de equações
 
-  if(det(A))  % Verifica se o determinante é diferente de zero
+  if (det(A))  % Verifica se o determinante é diferente de zero
     [mAGauss, mbGauss] = gaussEliminacao(A, b, n);  % Eliminação de Gauss
     disp('Matriz após eliminação de Gauss sem Pivoteamento:');
     debug(mAGauss, mbGauss, n);  % Exibe a matriz aumentada após eliminação
@@ -47,7 +46,7 @@ function [A, b] = gaussEliminacao(A, b, n)
         A(i, j) = A(i, j) - fator * A(k, j);  % Atualiza a linha i
       endfor
       b(i) = b(i) - fator * b(k);  % Atualiza o vetor b
-      disp('Matriz A e vetor b após atualização:');
+      disp('Matriz A(Coeficientes) e Vetor b(Termos independentes) após atualização:');
       debug(A, b, n);  % Exibe a matriz atualizada
     endfor
   endfor
@@ -57,9 +56,9 @@ function debug(A, b, n)
   % Imprime a matriz aumentada para depuração
   for i = 1:n
     for j = 1:n
-      fprintf('%.2f, ', A(i, j));  % Exibe coeficientes com duas casas decimais
+      fprintf('%.2f\t', A(i, j));  % Exibe coeficientes com duas casas decimais
     endfor
-    fprintf('= %.2f\n', b(i));  % Exibe o valor independente
+    fprintf('| %.2f\n', b(i));  % Exibe o valor independente
   endfor
 endfunction
 
@@ -72,16 +71,14 @@ endfunction
 
 function x = gaussSubstituicao(A, b, n)
   % Realiza a substituição reversa para encontrar as soluções
+  x = zeros(n, 1);  % Inicializa o vetor de soluções
   x(n) = b(n) / A(n, n);  % Solução para a última variável
-  disp(['x', num2str(n), ' = ', num2str(x(n))]);  % Exibe a solução para x(n)
-
   for i = n-1:-1:1
     soma = b(i);  % Inicia a soma com o valor correspondente em b
     for j = i+1:n
       soma = soma - A(i, j) * x(j);  % Subtrai contribuições das variáveis já resolvidas
     endfor
     x(i) = soma / A(i, i);  % Calcula a solução para a variável i
-    disp(['x', num2str(i), ' = ', num2str(x(i))]);  % Exibe a solução para x(i)
   endfor
 endfunction
 
