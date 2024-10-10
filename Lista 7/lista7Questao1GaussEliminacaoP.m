@@ -1,4 +1,4 @@
-function lista6Questao1GaussEliminacaoP()
+function lista7Questao1GaussEliminacaoP()
   % Sistema de equações a ser resolvido:
   % 1*x1 + 6*x2 + 2*x3 + 4*x4 = 8
   % 3*x1 + 19*x2 + 4*x3 + 15*x4 = 25
@@ -94,5 +94,5 @@ function debugRaizes(x, n)
 endfunction
 
 % Chama a função principal
-lista6Questao1GaussEliminacaoP();
+lista7Questao1GaussEliminacaoP();
 
