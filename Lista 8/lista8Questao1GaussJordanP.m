@@ -1,82 +1,71 @@
 function lista8Questao1GaussJordanP()
-  % Sistema de equações a ser resolvido:
-  % 1*x1 + 6*x2 + 2*x3 + 4*x4 = 8
-  % 3*x1 + 19*x2 + 4*x3 + 15*x4 = 25
-  % 1*x1 + 4*x2 + 8*x3 - 12*x4 = 18
-  % 5*x1 + 33*x2 + 9*x3 + 3*x4 = 72
 
   % Exibe o sistema de equações
   disp('Sistema de Equações:');
-  disp('1*x1 + 6*x2 + 2*x3 + 4*x4 = 8');
-  disp('3*x1 + 19*x2 + 4*x3 + 15*x4 = 25');
-  disp('1*x1 + 4*x2 + 8*x3 - 12*x4 = 18');
-  disp('5*x1 + 33*x2 + 9*x3 + 3*x4 = 72');
+  disp('-0.04*x1 + 0.04*x2 + 0.12*x3 = 3');
+  disp('0.56*x1 - 1.56*x2 + 0.32*x3 = 1');
+  disp('-0.24*x1 + 1.24*x2 - 0.28*x3 = 0');
   disp(' ');
 
+
   % Matriz de coeficientes do sistema
-  A = [ 1 , 6  , 2 , 4;
-        3 , 19 , 4 , 15;
-        1 , 4  , 8 , -12;
-        5 , 33 , 9 , 3];
+  A = [ -0.04,0.04,0.12 ;
+        0.56,-1.56,0.32;
+        -0.24,1.24,-0.28;];
 
   % Matriz de termos independentes
-  b = [8; 25; 18; 72];
-
-  % Criação da matriz aumentada [A | b]
-  Ab = [A b];
+  b = [3; 1; 0];
 
   n = size(A, 1);  % Obtém o número de equações
 
+  I = eye(n);
+
+  % Criação da matriz aumentada [A | b]
+  Ab = [A I b];
+
   if (det(A) != 0)  % Verifica se a matriz é não singular
     Ab = gaussEliminacao(Ab, n);  % Executa a eliminação de Gauss
-
     % Exibe a matriz aumentada após a eliminação
-    disp('Matriz aumentada após eliminação de Gauss com Pivoteamento:');
-    debug(Ab, n);
+    disp('Matriz aumentada após eliminação de Gauss Jordan com Pivoteamento:');
+    debug(Ab);
     x = gaussSubstituicao(Ab, n);  % Resolve o sistema por substituição
     disp('Soluções:');
-    debugRaizes(x, n);  % Exibe as soluções das variáveis
+    debugRaizes(x,n);  % Exibe as soluções das variáveis
   else
     disp('A matriz é singular, não há solução única.');  % Mensagem de erro
   end
 endfunction
 
 function Ab = gaussEliminacao(Ab, n)
-  % Realiza a eliminação de Gauss
-  for k = 1:n-1  % Para cada coluna, exceto a última
+  % Realiza a eliminação de Gauss-Jordan
+  for k = 1:n  % Para cada coluna
     Ab = gaussPivotagem(Ab, n, k);  % Aplica pivotagem
-    for i = k+1:n  % Para cada linha abaixo da linha k
-       fator = Ab(i, k) / Ab(k, k);  % Calcula o fator de eliminação
-       fprintf('Fator de eliminação (linha %d): %.2f\n', i, fator);  % Mostra o fator com 2 casas decimais
-       Ab(i, k:n+1) = Ab(i, k:n+1) - fator * Ab(k, k:n+1);  % Atualiza a linha
 
-       % Exibe a matriz A e o vetor b após atualização
-       disp('Matriz extendida após a atualização será:');
-       debug(Ab, n);
+    % Normaliza a linha do pivô para garantir que o pivô seja 1
+    Ab(k, :) = Ab(k, :) / Ab(k, k);  % Divide a linha toda pelo valor do pivô
+
+    for i = 1:n  % Para todas as outras linhas
+      if i != k
+        fator = Ab(i, k) / Ab(k, k);  % Calcula o fator de eliminação
+        Ab(i, :) = Ab(i, :) - fator * Ab(k, :);  % Atualiza a linha
+
+        % Exibe a matriz após a atualização
+        disp('Matriz estendida após a atualização:');
+        debug(Ab);
+      end
     end
   end
-
-  for k = 2:n  % Para cada coluna, exceto a primeira
-    for i = 1:k-1  % Para cada linha acima da linha do pivô
-       fator = Ab(i, k) / Ab(k, k);  % Calcula o fator de eliminação
-       fprintf('Fator de eliminação (linha %d): %.2f\n', i, fator);  % Mostra o fator com 2 casas decimais
-       Ab(i, k:n+1) = Ab(i, k:n+1) - fator * Ab(k, k:n+1);  % Atualiza a linha
-
-       % Exibe a matriz A e o vetor b após atualização
-       disp('Matriz extendida após a atualização será:');
-       debug(Ab, n);
-    end
-  end
-
 endfunction
 
-function debug(Ab, n)
+
+function debug(Ab)
   % Exibe a matriz aumentada em formato de matriz estendida
-  for i = 1:n
-    for j = 1:n  % Para as colunas da matriz A
+  [n_rows, n_cols] = size(Ab);
+  for i = 1:n_rows
+    for j = 1:n_cols-1  % Para as colunas da matriz A
       fprintf('%.2f\t', Ab(i, j));  % Formatação para duas casas decimais
     end
-    fprintf('| %.2f\n', Ab(i, n+1));  % Exibe o valor do termo independente
+    fprintf('| %.2f\n', Ab(i, j+1));  % Exibe o valor do termo independente
   end
 endfunction
 
@@ -88,18 +77,20 @@ function Ab = gaussPivotagem(Ab, n, k)
       disp(['Troca de linha: ', num2str(k), ' com ', num2str(ipr)]);  % Mostra a troca de linha
       Ab([k, ipr], :) = Ab([ipr, k], :);  % Troca as linhas
   end
+  % Normaliza a linha pivô
 endfunction
+
 
 function x = gaussSubstituicao(Ab, n)
   % Resolve o sistema usando substituição regressiva
   x = zeros(n, 1);  % Inicializa o vetor de soluções
-  x(n) = Ab(n, n+1) / Ab(n, n);  % Calcula a última variável
+  x(n) = Ab(n, 2*n+1) / Ab(n, n);  % Calcula a última variável
   for i = n-1:-1:1  % Retrocede para calcular as outras variáveis
-    x(i) = (Ab(i, n+1) - Ab(i, i+1:n) * x(i+1:n)) / Ab(i, i);
+    x(i) = (Ab(i, 2*n+1) - Ab(i, i+1:n) * x(i+1:n)) / Ab(i, i);
   end
 endfunction
 
-function debugRaizes(x, n)
+function debugRaizes(x,n)
   % Exibe as raízes encontradas
   for i = 1:n
     fprintf('x%d = %.2f\n', i, x(i));  % Exibe cada raiz com o índice
