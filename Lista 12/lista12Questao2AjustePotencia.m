@@ -4,19 +4,34 @@ function lista12Questao2AjustePotencia()
     yi = [25 70 380 550 610 1220 830 1450]';
 
     % Execução do método de ajuste de potência
-    [alpha, beta, desvio_padrao_total, erro_padrao_estimativa, r2] = ajuste_potencia(xi, yi);
+    [alpha, beta, desvio_padrao_total, erro_padrao_estimativa, r2, log_y_adjusted, detalhes] = ajuste_potencia(xi, yi);
 
-    disp('Coeficiente de escala (alpha):'), disp(alpha);
-    disp('Coeficiente de potência (beta):'), disp(beta);
-    disp('Desvio padrão total:'), disp(desvio_padrao_total);
-    disp('Erro padrão da estimativa:'), disp(erro_padrao_estimativa);
-    disp('Coeficiente de determinação (r^2):'), disp(r2);
+    % Exibir detalhes no terminal
+    disp('=== RESULTADOS DO AJUSTE DE POTÊNCIA ===');
+    fprintf('Coeficiente de escala (alpha): %.4f\n', alpha);
+    fprintf('Coeficiente de potência (beta): %.4f\n', beta);
+    fprintf('Desvio padrão total (log): %.4f\n', desvio_padrao_total);
+    fprintf('Erro padrão da estimativa (log): %.4f\n', erro_padrao_estimativa);
+    fprintf('Coeficiente de determinação (r^2): %.4f\n\n', r2);
+
+    % Mostrar valores intermediários
+    disp('--- Detalhes dos Somatórios e Intermediários ---');
+    disp(detalhes);
+
+    % Mostrar resíduos e comparação
+    disp('--- Comparação dos Dados (log-transformados) ---');
+    fprintf('%-10s %-15s %-15s %-10s\n', 'x', 'log(y_real)', 'log(y_ajustado)', 'residuo');
+    log_y = log(yi);
+    residuos = log_y - log_y_adjusted;
+    for i = 1:length(xi)
+        fprintf('%-10.2f %-15.4f %-15.4f %-10.4f\n', xi(i), log_y(i), log_y_adjusted(i), residuos(i));
+    end
 
     % Plotar o ajuste
     plot_ajuste_potencia(xi, yi, alpha, beta);
 endfunction
 
-function [alpha, beta, desvio_padrao_total, erro_padrao_estimativa, r2] = ajuste_potencia(x, y)
+function [alpha, beta, desvio_padrao_total, erro_padrao_estimativa, r2, log_y_adjusted, detalhes] = ajuste_potencia(x, y)
     % Transformação logarítmica
     log_x = log(x);
     log_y = log(y);
@@ -37,12 +52,17 @@ function [alpha, beta, desvio_padrao_total, erro_padrao_estimativa, r2] = ajuste
 
     % Estatísticas
     Sy2_log = sum((log_y - mean(log_y)).^2); % Resíduo em relação à média
-    y_adjusted_log = beta * log_x + log_alpha;
-    Se2_log = sum((log_y - y_adjusted_log).^2); % Resíduo em relação ao ajuste
+    log_y_adjusted = beta * log_x + log_alpha;
+    Se2_log = sum((log_y - log_y_adjusted).^2); % Resíduo em relação ao ajuste
 
     desvio_padrao_total = sqrt(Sy2_log / (n - 1));
     erro_padrao_estimativa = sqrt(Se2_log / (n - 2));
     r2 = (Sy2_log - Se2_log) / Sy2_log;
+
+    % Coletar detalhes intermediários
+    detalhes = struct('Sx_log', Sx_log, 'Sy_log', Sy_log, 'Sx2_log', Sx2_log, ...
+                      'Sxy_log', Sxy_log, 'Sy2_log', Sy2_log, 'Se2_log', Se2_log);
+
 endfunction
 
 function plot_ajuste_potencia(x, y, alpha, beta)
@@ -57,7 +77,12 @@ function plot_ajuste_potencia(x, y, alpha, beta)
     title('Ajuste de Potência por Mínimos Quadrados');
     legend('Dados', 'Ajuste de Potência');
     grid on;
+
+    % Adicionar informações ao gráfico
+    text(mean(x), mean(y), sprintf('y = %.2f x^{%.2f}', alpha, beta), ...
+        'FontSize', 12, 'Color', 'red', 'HorizontalAlignment', 'center');
 endfunction
 
-lista9Questao2AjustePotencia();
+% Chamar a função principal
+lista12Questao2AjustePotencia();
 
